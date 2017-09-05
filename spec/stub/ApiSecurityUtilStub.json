@@ -1,0 +1,19 @@
+{
+  "L1Req": {
+    "prefix": "apex_l1_eg",
+    "method": "get",
+    "url": "https://playground.idahive.sg:443/api/v1/rest/level1/ex-ex/",
+    "appid": "playground-7lc12h0BYV733IXxKyXeCi18",
+    "secret": "61680c106317522623507cc36807a0e9a111bcc4",
+    "params": { "kbsize":5, "clientname": "local"}
+  },
+  "L2Req": {
+    "prefix": "apex_l2_eg",
+    "method": "get",
+    "url": "https://playground.idahive.sg:443/api/v1/rest/level2/ex-ex/",
+    "appid": "playground-7lc12h0BYV733IXxKyXeCi18",
+    "params": { "kbsize":5, "clientname": "local"},
+    "pemFileName": "./spec/cert/ifrit.pem",
+    "passphrase": "password"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "node-apex-api-security",
+  "version": "0.2.0",
+  "description": "APEX API security utiity. It include helper operations to generate HMAC256 and RSA256 signature",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "lodash": "^4.17.4",
+    "minimist": "^1.2.0",
+    "nonce": "^1.0.4",
+    "querystring": "^0.2.0",
+    "superagent": "^3.5.2",
+    "validator": "^7.0.0",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.3.2"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --opts spec/support/mocha.opts --recursive spec/scripts/",
+    "testCoverage": "nyc  --reporter=lcovonly npm test"
+  }
+}

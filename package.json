@@ -4,6 +4,7 @@
   "description": "APEX API security utiity. It include helper operations to generate HMAC256 and RSA256 signature",
   "private": true,
   "main": "index.js",
+  "license": "MIT License",
   "dependencies": {
     "bluebird": "^3.5.0",
     "lodash": "^4.17.4",
@@ -17,11 +18,12 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
+    "coveralls": "^2.13.1",
     "mocha": "^3.2.0",
     "nyc": "^10.3.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --opts spec/support/mocha.opts --recursive spec/scripts/",
-    "testCoverage": "nyc  --reporter=lcovonly npm test"
+    "test-travis-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   }
 }

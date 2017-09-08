@@ -1,4 +1,6 @@
 # APEX API Security Utility
+[![Build Status](https://travis-ci.org/GovTechSG/node-apex-api-security.svg?branch=development)](https://travis-ci.org/GovTechSG/node-apex-api-security)
+[![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=development)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=development)
 
 A node helper utilities that form HTTP security header for authentication and verification with APEX. There are two interfaces as of now, ApiSecurityUtil and ApexAuthorizationUtil,which support different input parameter types.
 

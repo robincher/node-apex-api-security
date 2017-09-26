@@ -1,6 +1,6 @@
 # APEX API Node JS Security Utility
 [![Build Status](https://travis-ci.org/GovTechSG/node-apex-api-security.svg?branch=master)](https://travis-ci.org/GovTechSG/node-apex-api-security)
-[![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=development)
+[![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
 A node helper utilities that form HTTP security header for API authenticationgit. There are two interfaces as of now, ApiSecurityUtil and ApiSigningUtil,which support different input parameter types.

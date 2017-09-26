@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=development)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=development)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
-A node helper utilities that form HTTP security header for authentication and verification with APEX. There are two interfaces as of now, ApiSecurityUtil and ApexAuthorizationUtil,which support different input parameter types.
+A node helper utilities that form HTTP security header for API authenticationgit. There are two interfaces as of now, ApiSecurityUtil and ApiSigningUtil,which support different input parameter types.
 
 ## Getting Started
 Include this helper class in your project package json
@@ -28,12 +28,12 @@ npm test
 
 Please update the values in the test cases if necessary.
 
-## Walkthrough for ApexAuthorizationUtil
+## Walkthrough for ApiSigningUtil
 
 **Preparing the request parameter (Dummy values)**
 
 ```
- let realm = 'http://tenant.api/token';
+ let realm = 'http://tenant.com/token';
 ```
 
 It identifies the fact that the message comes from the realm for your app
@@ -46,7 +46,7 @@ It identifies the fact that the message comes from the realm for your app
  let authPrefixL2 = 'Apex_l2_ig';
 ```
 
- Custom Apex specific Authorization scheme for a **specific gateway zone**. 
+ Custom API Gateway specific Authorization scheme for a **specific gateway zone**. 
  
 ```
  let httpMethod = 'get';
@@ -55,36 +55,36 @@ It identifies the fact that the message comes from the realm for your app
  The Api HTTP Call operation method
  
 ```
- var url = "https://tenant.api/api/v1/resource";
+ var url = "https://tenant.com/api/v1/resource";
  var appId = 'yourAppID';
 ```
 
-Apex App and Api related information that is published through Apex Community Manager
+API Gateway's App and Api related information that are generated and published through the community or developer portal.
 
 ```
 var secret = 's0m3S3ecreT';
 ```
-If you are authenticating with Apex L1 , please provide the App secret generated. 
+If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
 
-***Note: Set it to null if you are using Apex L2 RSA256 Signing***
+***Note: Set it to null if you are using ApiSigningUtil L2 RSA256 Signing***
 
-**Invoking the function for ApexAuthorizationUtil**
+**Invoking the function for ApiSigningUtil**
 
 Typically, you would only need to retrieve the generated signature token and append it to your HTTP request header
 
 ```
-const ApexAuthorizationUtil = require('<<package-name-defined').ApexAuthorizationUtil;
-let secToken = ApexAuthorizationUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formJson, passphrase, certFileName, nonce, timestamp);
+const ApiSigningUtil = require('<<package-name-defined').ApiSigningUtil;
+let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formJson, passphrase, certFileName, nonce, timestamp);
 
 ```
 
 If you want to log while running the unit test , just set the log level to trace
 
 ```
-ApexAuthorizationUtil.setLogLevel('none');
+ApiSigningUtil.setLogLevel('none');
 ```
 
-## Walkthrough for ApexSecurityUtil
+## Walkthrough for ApiSecurityUtil
 
 **Preparing the request parameter (Dummy values)**
 
@@ -115,7 +115,7 @@ let L2RequestParams = {
 }
 ```
 
-***Note: Set secret to null or undefined if you are using Apex L2 RSA256 Signing (L2RequestParams)***
+***Note: Set secret to null or undefined if you are using ApiSecurity L2 RSA256 Signing (L2RequestParams)***
 
 **Invoking the function for ApiSecurityUtil**
 
@@ -130,7 +130,7 @@ let secToken = ApiSecurityUtil.getSecurityToken(<<RequestParams>);
 
 ## Security Signature Token Example
 ```
-Apex_l2_ig realm="http://tenant.api/token", apex_l2_ig_timestamp="1502199514462", apex_l2_ig_nonce="-5816789581922453013", apex_l2_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", 
+Apex_l2_ig realm="http://tenant.com/token", apex_l2_ig_timestamp="1502199514462", apex_l2_ig_nonce="-5816789581922453013", apex_l2_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", 
 apex_l2_ig_signature_method="SHA256withRSA", 
 apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlfUpGvzoccr9CA0wO8jL6VNh6cqPnVjO4bpVnSLQ8iiPOz4JK7kxJ4Cb19sX4pO6sx4srDmNqfnGOp5FeFx/rCr16ecvd3+HJF5sJEeOrDytr+HlOBf9pARVx5GroVSKxsKkXzto5XpJ2MN0Mu8eZA5BNJwune/TnnEy0oqjJWNSE+puGH4jMsp4hgLsJOwxJPS8Zg9dtPzoV60Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A=="
 ```

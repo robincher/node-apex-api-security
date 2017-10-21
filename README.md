@@ -115,7 +115,17 @@ let L2RequestParams = {
 }
 ```
 
-***Note: Set secret to null or undefined if you are using ApiSecurity L2 RSA256 Signing (L2RequestParams)***
+***Note 1: Set secret to null or undefined if you are using ApiSecurity L2 RSA256 Signing (L2RequestParams)***
+
+
+```
+  //Remove undefined or null query params from signing using Lodash
+   if(!_.isNil(reqProps.params)) {
+        reqProps.params = _.pickBy(reqProps.params, _.identity);
+   }
+```
+
+***Note 2: Request Query parameters that are set to undefined or null will be ignore during the formation of Signature's BaseString***
 
 **Invoking the function for ApiSecurityUtil**
 

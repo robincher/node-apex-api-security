@@ -1,6 +1,6 @@
 {
   "name": "node-apex-api-security",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "APEX API security utiity. It include helper operations to generate HMAC256 and RSA256 signature",
   "private": true,
   "main": "index.js",

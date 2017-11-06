@@ -41,32 +41,32 @@ It identifies the fact that the message comes from the realm for your app
 + If the incoming message is not signed, the platform expects the AppID and doesn't look for the realm value.
 + If the incoming message is signed, the platform looks for the realm parameter. If it exists, the platform uses the same realm value when sending an authentication challenge. If the value isn't specified, the platform uses this value:
 
+Custom API Gateway specific Authorization scheme for a **specific gateway zone**. 
+ 
 ```
  let authPrefixL1 = 'Apex_l1_ig';
  let authPrefixL2 = 'Apex_l2_ig';
 ```
-
- Custom API Gateway specific Authorization scheme for a **specific gateway zone**. 
+ The Api HTTP Call operation method
  
 ```
  let httpMethod = 'get';
 ```
 
- The Api HTTP Call operation method
+API Gateway's App and Api related information that are generated and published through the community or developer portal.
  
 ```
  var url = "https://tenant.com/api/v1/resource";
  var appId = 'yourAppID';
 ```
 
-API Gateway's App and Api related information that are generated and published through the community or developer portal.
+If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
+
+***Note: Set it to null if you are using ApiSigningUtil L2 RSA256 Signing***
 
 ```
 var secret = 's0m3S3ecreT';
 ```
-If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
-
-***Note: Set it to null if you are using ApiSigningUtil L2 RSA256 Signing***
 
 **Invoking the function for ApiSigningUtil**
 
@@ -82,6 +82,7 @@ let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, a
 
 Only populate the **formJson** parameter if your API request have x-form-urlencoded data or query parameters. 
 
+**Logging**
 
 If you want to log while running the unit test , just set the log level to trace
 
@@ -105,6 +106,8 @@ let L1RequestParams = {
 }
 ```
 
+***Note 1: Set secret to null or undefined if you are using ApiSecurity L2 RSA256 Signing (L2RequestParams)***
+
 ```
 
 let L2RequestParams = {
@@ -120,8 +123,7 @@ let L2RequestParams = {
 }
 ```
 
-***Note 1: Set secret to null or undefined if you are using ApiSecurity L2 RSA256 Signing (L2RequestParams)***
-
+***Note 2: Request Query parameters that are set to undefined or null will be ignore during the formation of Signature's BaseString***
 
 ```
   //Remove undefined or null query params from signing using Lodash
@@ -129,9 +131,6 @@ let L2RequestParams = {
         reqProps.params = _.pickBy(reqProps.params, _.identity);
    }
 ```
-
-***Note 2: Request Query parameters that are set to undefined or null will be ignore during the formation of Signature's BaseString***
-
 
 ***Note 3: Passing query param and x-form-urlencoded data***
 

@@ -1,6 +1,6 @@
 # APEX API Node JS Security Utility
 [![Build Status](https://travis-ci.org/GovTechSG/node-apex-api-security.svg?branch=development)](https://travis-ci.org/GovTechSG/node-apex-api-security)
-[![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=development)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=development)
+[![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=development)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
 A node helper utilities that form HTTP security header for API authenticationgit. There are two interfaces as of now, ApiSecurityUtil and ApiSigningUtil,which support different input parameter types.
@@ -74,9 +74,14 @@ Typically, you would only need to retrieve the generated signature token and app
 
 ```
 const ApiSigningUtil = require('<<package-name-defined').ApiSigningUtil;
-let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formJson, passphrase, certFileName, nonce, timestamp);
+let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formJson, passphrase, certFileName);
 
 ```
+
+**Passing query param and x-form-urlencoded data**
+
+Only populate the **formJson** parameter if your API request have x-form-urlencoded data or query parameters. 
+
 
 If you want to log while running the unit test , just set the log level to trace
 
@@ -126,6 +131,11 @@ let L2RequestParams = {
 ```
 
 ***Note 2: Request Query parameters that are set to undefined or null will be ignore during the formation of Signature's BaseString***
+
+
+***Note 3: Passing query param and x-form-urlencoded data***
+
+Only populate the **formData** parameter if your API request have x-form-urlencoded data or query parameters. 
 
 **Invoking the function for ApiSecurityUtil**
 

@@ -74,13 +74,14 @@ Typically, you would only need to retrieve the generated signature token and app
 
 ```
 const ApiSigningUtil = require('<<package-name-defined').ApiSigningUtil;
-let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formJson, passphrase, certFileName);
+
+let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formData, passphrase, certFileName);
 
 ```
 
 **Passing query param and x-form-urlencoded data**
 
-Only populate the **formJson** parameter if your API request have x-form-urlencoded data or query parameters. 
+Only populate the **formData** parameter if your API request have x-form-urlencoded data or query parameters. 
 
 **Logging**
 

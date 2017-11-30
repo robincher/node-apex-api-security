@@ -12,5 +12,6 @@ export declare function getBaseString(authPrefix: string, signatureMethod: strin
 export declare function getTokenFromSecret(realm: string, authPrefix: string, httpMethod: string, urlPath: string, appId: string, secret: string, formJson?: object, nonce?: string, timestamp?: number);
 export declare function getTokenFromCertFileName(realm: string, authPrefix: string, httpMethod: string, urlPath: string, appId: string, formJson?: string, passphrase: string, certFileName: string, nonce?: string, timestamp?: number);
 export declare function getTokenFromCertString(realm: string, authPrefix: string, httpMethod: string, urlPath: string, appId: string, formJson?: object, passphrase: string, certString: string, nonce?: string, timestamp?: number);
+export declare function getToken(realm: string, authPrefix: string, httpMethod: string, urlPath: string, appId: string, secret?: string, formJson?: object, passphrase?: string, certFileName?: string, nonce?: string, timestamp?: number, certString?: string);
 
 export declare function makeHttpRequest(urlPath: string, token: string, formData?: object, httpMethod: string, port: number);

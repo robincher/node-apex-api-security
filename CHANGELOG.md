@@ -9,3 +9,6 @@
 + Update superagent version for security patch
 ### V0.4.0
 + Minor improvements and typo fix in index.js
+### V0.4.1
++ There are now 3 variants to getToken in ApiSigningUtil.js
++ Typedefs has been added for ApiSigningUtil.js

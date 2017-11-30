@@ -308,14 +308,21 @@ describe('ApiSigning Token Test', function () {
     let liveTestToggle = true;
 
     it('Api Signed Token - Basic L1 Test', function () {
-        let token = ApiSigningUtil.getToken(realm, authPrefixL1, httpMethod,
-            url, appId, secret, null, null, null, nonce, timestamp);
+        let token = ApiSigningUtil.getTokenFromSecret(realm, authPrefixL1, httpMethod,
+            url, appId, secret, null, nonce, timestamp);
         expect(token).to.equal(expectedTokenL1);
     });
 
-    it('Api Signed Token - Basic L2 Test', function () {
-        let token = ApiSigningUtil.getToken(realm, authPrefixL2, httpMethod,
-            url, appId, null, null, passphrase, certFileName, nonce, timestamp);
+    it('Api Signed Token - Basic L2 Test with cert file', function () {
+        let token = ApiSigningUtil.getTokenFromCertFileName(realm, authPrefixL2, httpMethod,
+            url, appId, null, passphrase, certFileName, nonce, timestamp);
+        expect(token).to.equal(expectedTokenL2);
+    });
+
+    it('Api Signed Token - Basic L2 Test with cert string', function () {
+        const certString = ApiSigningUtil.getPrivateKeyFromPem(certFileName);
+        let token = ApiSigningUtil.getTokenFromCertString(realm, authPrefixL2, httpMethod,
+            url, appId, null, passphrase, certString, nonce, timestamp);
         expect(token).to.equal(expectedTokenL2);
     });
 

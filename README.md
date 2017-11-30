@@ -32,6 +32,7 @@ Please update the values in the test cases if necessary.
 
 **Preparing the request parameter (Dummy values)**
 
+
 ```
  let realm = 'http://tenant.com/token';
 ```
@@ -56,8 +57,8 @@ Custom API Gateway specific Authorization scheme for a **specific gateway zone**
 API Gateway's App and Api related information that are generated and published through the community or developer portal.
  
 ```
- var url = "https://tenant.com/api/v1/resource";
- var appId = 'yourAppID';
+let urlPath = "https://tenant.com/api/v1/resource";
+let appId = 'yourAppID';
 ```
 
 If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
@@ -65,17 +66,56 @@ If you are authenticating with ApiSigningUtil L1 , please provide the App secret
 ***Note: Set it to null if you are using ApiSigningUtil L2 RSA256 Signing***
 
 ```
-var secret = 's0m3S3ecreT';
+let secret = 's0m3S3ecreT';
+```
+
+If you are authenticating with ApiSigningUtil L2 , please provide either  (certFileName) or the actual contents (certString)
+
+1)Signing certificate contents
+
+```
+let certString = 'Cert Contents here;;
+let passphrase = 'passphrase for the certString';
+```
+
+2) Signing certificate's path and corresponding passphrase
+
+```
+let certFileName = './spec/cert/default.pem'; 
+let passphrase = 'passphrase for the certFileName';
 ```
 
 **Invoking the function for ApiSigningUtil**
 
 Typically, you would only need to retrieve the generated signature token and append it to your HTTP request header
 
+Import the library
+
 ```
 const ApiSigningUtil = require('<<package-name-defined').ApiSigningUtil;
+```
 
-let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formData, passphrase, certFileName);
+Formulate the request object
+
+```
+let reqProps = {
+    "authPrefix": <<authPrefixL1 or authPrefixL2, depending on your use case>>,
+    "realm" : realm,
+    "appId" : appId,
+    "secret" : secret, //If you are authenticating with L1
+    "urlPath" : urlPath,
+    "httpMethod" : httpMethod,
+    "formData" : {},
+    "certString" : certString,  //If you are authenticating L2 with the cert contents
+    "certFileName" : certFilaName, //If you are authenticating L2 with a cert path
+    "passphrase" : passphrase //For L2
+    "nonce" : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
+    "timestamp" : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
+}
+```
+
+```
+let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
 
 ```
 

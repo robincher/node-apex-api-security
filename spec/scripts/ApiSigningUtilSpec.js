@@ -5,7 +5,7 @@ const ApiSigningUtil = require('../../lib/ApiSigningUtil');
 //ApiSigningUtil.setLogLevel('trace');
 ApiSigningUtil.setLogLevel('trace');
 
-describe('ApiSigning L1 Test', function () {
+describe('ApiSigning L1 Signature Test', function () {
     let secret = 'secret';
     let message = 'message';
     let expectedResult = 'i19IcCmVwVmMVz2x4hhmqbgl1KeU0WnXBgoDYFeWNgs=';
@@ -86,7 +86,7 @@ describe('ApiSigning L1 Test', function () {
 });
 
 
-describe('ApiSigning L2 Test', function () {
+describe('ApiSigning L2 Signature Test', function () {
     let pemFileName = 'spec/cert/ssc.alpha.example.com.pem';
     let alphaFileName = 'spec/cert/ssc.alpha.example.com.cer';
     let betaFileName = 'spec/cert/ssc.beta.example.com.cer';
@@ -219,16 +219,221 @@ describe('ApiSigning L2 Test', function () {
     });
 });
 
-describe('ApiSigning BaseString Test', function () {
+
+describe('ApiSigning Signature BaseString Test', function () {
     it('ApiSigning BaseString - Basic Test', function () {
-        let url = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
+        let expectedBaseString = 'GET&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=1355584618267440511&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502175057654&apex_l1_ig_version=1.0';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'get',
+            'formData': null,
+            'nonce': '1355584618267440511',
+            'timestamp': '1502175057654',
+
+        };
+
+        let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
+
+        expect(baseString).to.equal(expectedBaseString);
+    });
+
+    it('ApiSigning Signature BaseString - With Form Data', function () {
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
+        let expectedBaseString = 'POST&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=6584351262900708156&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502184161702&apex_l1_ig_version=1.0&param1=data1';
+        let formData = {'param1': 'data1'};
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            'formData': formData,
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702',
+
+        };
+
+        let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
+
+        expect(baseString).to.equal(expectedBaseString);
+    });
+
+    it('ApiSigning BaseString - Invalid Url 01', function () {
+        let urlPath = 'ftp://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            'formData': null,
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702',
+
+        };
+        expect(ApiSigningUtil.getSignatureBaseString.bind(ApiSigningUtil,
+            baseProps)).to.throw('Support http and https protocol only!');
+    });
+
+    it('ApiSigning BaseString - Invalid Url 02', function () {
+        let urlPath = '://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            'formData': null,
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702',
+
+        };
+        expect(ApiSigningUtil.getSignatureBaseString.bind(ApiSigningUtil,
+            baseProps)).to.throw('Support http and https protocol only!');
+    });
+});
+
+describe('ApiSigning Signature Token Test', function () {
+
+    let realm = 'https://example.com';
+    let authPrefixL1 = 'Apex_l1_ig';
+    let authPrefixL2 = 'Apex_l2_ig';
+    let httpMethod = 'get';
+    let urlPath = 'https://example.com/api/v1/resources';
+    let appId = 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ';
+    let secret = 'ffef0c5087f8dc24a3f122e1e2040cdeb5f72c73';
+    let nonce = '-5816789581922453013';
+    let timestamp = '1502199514462';
+
+    let expectedTokenL1 = 'Apex_l1_ig realm="https://example.com", apex_l1_ig_timestamp="1502199514462", apex_l1_ig_nonce="-5816789581922453013", apex_l1_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", apex_l1_ig_signature_method="HMACSHA256", apex_l1_ig_signature="ua32WiJ7FfDOZKuaaVDJyF12Yq0a8leTt5KAtHcTQc0=", apex_l1_ig_version="1.0"';
+    let expectedTokenL2 = 'Apex_l2_ig realm="https://example.com", apex_l2_ig_timestamp="1502199514462", apex_l2_ig_nonce="-5816789581922453013", apex_l2_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", apex_l2_ig_signature_method="SHA256withRSA", apex_l2_ig_signature="rIb8tCUt2gghoZ0FsRTmDcbngW8UjeEs8UdMLC7y/ptmTyo1D8D4wZ0BPVJj3wB/r/VqiqGkl9axow2pTXM8jfZ0bavhIokqRNucv1yoEhsoGy6QnxeXymi2MJI+0XtUhsyIwwmNqVSCzFCFmviIGgPtGqGJ7+w6ABTupw/v38BExiKHbiMYnG1SzYXkv/qaQfEntrzgeWyPi8LxEX2p/6NxE7j3eRfBWXgipXNOoomGrPDcuRVGi2lxZntNqpVyTYKZbcXkFf/ZJNSaUcCTX97zebWFKB8F6cui7clLznqcQFwgLzamt9xDVu4FU56xjVvd2eqUZ+h5W2OX9QPm2IgCFqSpXSrziDFagi7tUVwLr3QstiW3qLxCXdMMYNPjewAe5vN0MJsSitadKIfNh9r4geWyB8dyuHATGiFSYITRY9n8k0CWjjEAOto94XPw3Fw/M9DV/8nLiHow2d+ul+IQijc8P72kIGi6b0fjXYDzq06v7WnNvl9vC5DY2gCaD4hFrzFX1jC9S4jKodGIUN0Xb1LNxw/mnjhACHL/tWBcu9SZ5HwHZSzRoBsKWZJPhiF+bqsvny3h4jJfg68l6SuqC9SzENtytJrEzGIZBxTW5hxfKBUVjIu6CoW2F54bbet7O8N63R3j8N3Q4HhWiFuXVDRBBpko/eMfNccfxrM=", apex_l2_ig_version="1.0"';
+    let certFileName = path.join(process.cwd(), 'spec/cert/ssc.alpha.example.com.pem');
+    let passphrase = 'passwordpem';
+
+
+    it('Api Signed Signature  Token - Basic L1 Test', function () {
+
+        let reqProps = {
+            "authPrefix": authPrefixL1,
+            "realm": realm,
+            "appId": appId,
+            "secret": secret,
+            "urlPath": urlPath,
+            "httpMethod": httpMethod,
+            "formData": null,
+            "nonce" : nonce,
+            "timestamp" : timestamp
+        };
+
+        let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
+        expect(sigToken).to.equal(expectedTokenL1);
+    });
+
+    it('Api Signed Signature  Token - Basic L2 Test with cert file', function () {
+
+        let reqProps = {
+            "authPrefix": authPrefixL2,
+            "realm": realm,
+            "appId": appId,
+            "urlPath": urlPath,
+            "httpMethod": httpMethod,
+            "certFileName": certFileName,
+            "passphrase": passphrase,
+            "nonce" : nonce,
+            "timestamp" : timestamp
+        };
+
+        let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
+        expect(sigToken).to.equal(expectedTokenL2);
+    });
+
+    it('Api Signed Signature Token - Basic L2 Test with cert string', function () {
+        const certString = ApiSigningUtil.getPrivateKeyFromPem(certFileName);
+
+        let reqProps = {
+            "authPrefix": authPrefixL2,
+            "realm": realm,
+            "appId": appId,
+            "urlPath": urlPath,
+            "httpMethod": httpMethod,
+            "certString": certString,
+            "passphrase": passphrase,
+            "nonce" : nonce,
+            "timestamp" : timestamp
+        };
+
+        let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
+        expect(sigToken).to.equal(expectedTokenL2);
+    });
+
+    it('Api Signed Signature Token - Wrong PassPhrase', function () {
+        let expectedMessage = 'error:06065064:digital envelope routines:EVP_DecryptFinal_ex:bad decrypt';
+        let reqProps = {
+            "authPrefix": authPrefixL2,
+            "realm": realm,
+            "appId": appId,
+            "urlPath": urlPath,
+            "httpMethod": httpMethod,
+            "certFileName": certFileName,
+            "passphrase": 'wrong',
+            "nonce" : nonce,
+            "timestamp" : timestamp
+        };
+
+        expect(ApiSigningUtil.getSignatureToken.bind(ApiSigningUtil, reqProps)).to.throw(expectedMessage);});
+
+    it('Api Signed Signature  Token - Not Supported Cert Type', function () {
+        let testFileName = path.join(process.cwd(), 'spec/cert/ssc.alpha.example.com.p12');
+        let expectedMessage = 'error:0906D06C:PEM routines:PEM_read_bio:no start line';
+        let reqProps = {
+            "authPrefix": authPrefixL2,
+            "realm": realm,
+            "appId": appId,
+            "urlPath": urlPath,
+            "httpMethod": httpMethod,
+            "certFileName": testFileName,
+            "passphrase": passphrase,
+            "nonce" : nonce,
+            "timestamp" : timestamp
+        };
+        expect(ApiSigningUtil.getSignatureToken.bind(ApiSigningUtil,reqProps)).to.throw(expectedMessage);
+    });
+
+    it('Api Signed Signature Token - Invalid File Name', function () {
+        let testFileName = path.join(process.cwd(), 'spec/cert/alphaX.apex.gov.sg.p12');
+        let expectedMessage = 'ENOENT: no such file or directory';
+        let reqProps = {
+            "authPrefix": authPrefixL2,
+            "realm": realm,
+            "appId": appId,
+            "urlPath": urlPath,
+            "httpMethod": httpMethod,
+            "certFileName": testFileName,
+            "passphrase": passphrase,
+            "nonce" : nonce,
+            "timestamp" : timestamp
+        };
+        expect(ApiSigningUtil.getSignatureToken.bind(ApiSigningUtil,reqProps)).to.throw(expectedMessage);});
+});
+
+xdescribe('ApiSigning (Deprecated) BaseString Test', function () {
+    it('ApiSigning BaseString - Basic Test', function () {
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
         let expectedBaseString = 'GET&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=1355584618267440511&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502175057654&apex_l1_ig_version=1.0';
 
         let baseString = ApiSigningUtil.getBaseString(
             'Apex_L1_IG'
             , 'HMACSHA256'
             , 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ'
-            , url
+            , urlPath
             , 'get'
             , null
             , '1355584618267440511'
@@ -288,7 +493,7 @@ describe('ApiSigning BaseString Test', function () {
     });
 });
 
-describe('ApiSigning Token Test', function () {
+xdescribe('ApiSigning (Deprecated) Token Test', function () {
     let realm = 'https://example.com';
     let authPrefixL1 = 'Apex_l1_ig';
     let authPrefixL2 = 'Apex_l2_ig';
@@ -308,20 +513,23 @@ describe('ApiSigning Token Test', function () {
     let liveTestToggle = true;
 
     it('Api Signed Token - Basic L1 Test', function () {
-        let token = ApiSigningUtil.getTokenFromSecret(realm, authPrefixL1, httpMethod,
+        let token = ApiSigningUtil.getTokenFromSecret(realm, authPrefixL1,
+            httpMethod,
             url, appId, secret, null, nonce, timestamp);
         expect(token).to.equal(expectedTokenL1);
     });
 
     it('Api Signed Token - Basic L2 Test with cert file', function () {
-        let token = ApiSigningUtil.getTokenFromCertFileName(realm, authPrefixL2, httpMethod,
+        let token = ApiSigningUtil.getTokenFromCertFileName(realm, authPrefixL2,
+            httpMethod,
             url, appId, null, passphrase, certFileName, nonce, timestamp);
         expect(token).to.equal(expectedTokenL2);
     });
 
     it('Api Signed Token - Basic L2 Test with cert string', function () {
         const certString = ApiSigningUtil.getPrivateKeyFromPem(certFileName);
-        let token = ApiSigningUtil.getTokenFromCertString(realm, authPrefixL2, httpMethod,
+        let token = ApiSigningUtil.getTokenFromCertString(realm, authPrefixL2,
+            httpMethod,
             url, appId, null, passphrase, certString, nonce, timestamp);
         expect(token).to.equal(expectedTokenL2);
     });

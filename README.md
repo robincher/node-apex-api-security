@@ -131,7 +131,9 @@ If you want to log while running the unit test , just set the log level to trace
 ApiSigningUtil.setLogLevel('none');
 ```
 
-## Walkthrough for ApiSecurityUtil
+## Walkthrough for ApiSecurityUtil (Deprecated)
+
+This interface will be deprecated for the next release. You are encouraged to user ApiSigningUtil instead.
 
 **Preparing the request parameter (Dummy values)**
 

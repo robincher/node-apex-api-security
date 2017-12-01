@@ -2,7 +2,6 @@
 const path = require('path');
 const ApiSigningUtil = require('../../lib/ApiSigningUtil');
 
-//ApiSigningUtil.setLogLevel('trace');
 ApiSigningUtil.setLogLevel('trace');
 
 describe('ApiSigning L1 Signature Test', function () {
@@ -424,7 +423,7 @@ describe('ApiSigning Signature Token Test', function () {
         expect(ApiSigningUtil.getSignatureToken.bind(ApiSigningUtil,reqProps)).to.throw(expectedMessage);});
 });
 
-xdescribe('ApiSigning (Deprecated) BaseString Test', function () {
+/*xdescribe('ApiSigning (Deprecated) BaseString Test', function () {
     it('ApiSigning BaseString - Basic Test', function () {
         let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
         let expectedBaseString = 'GET&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=1355584618267440511&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502175057654&apex_l1_ig_version=1.0';
@@ -491,9 +490,9 @@ xdescribe('ApiSigning (Deprecated) BaseString Test', function () {
             to.
             throw('Support http and https protocol only!');
     });
-});
+});*/
 
-xdescribe('ApiSigning (Deprecated) Token Test', function () {
+describe('ApiSigning (Deprecated) Token Test', function () {
     let realm = 'https://example.com';
     let authPrefixL1 = 'Apex_l1_ig';
     let authPrefixL2 = 'Apex_l2_ig';

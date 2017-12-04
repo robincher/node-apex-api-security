@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
-A node helper utilities that form HTTP security header for API authenticationgit. There are two interfaces as of now, ApiSecurityUtil and ApiSigningUtil,which support different input parameter types.
+A node helper utilities that form HTTP security header for API authentication. 
 
 ## Getting Started
 Include this helper class in your project package json
@@ -133,7 +133,7 @@ ApiSigningUtil.setLogLevel('none');
 
 ## Walkthrough for ApiSecurityUtil (Deprecated)
 
-This interface will be deprecated for the next release. You are encouraged to user ApiSigningUtil instead.
+This interface will be deprecated for the next release. You are encouraged to use ApiSigningUtil instead.
 
 **Preparing the request parameter (Dummy values)**
 
@@ -198,12 +198,7 @@ apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlf
 ```
 
 ## Contributing
-
-Easy as 1-2-3:
-
-  + Step 1: Branch off from ```development``` and work on your feature or hotfix.
-  + Step 2: Update the changelog.
-  + Step 3: Create a pull request when you're done.
++ Check out CONTRIBUTION.md
 
 ## References:
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)

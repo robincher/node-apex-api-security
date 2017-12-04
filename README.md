@@ -61,15 +61,16 @@ let urlPath = "https://tenant.com/api/v1/resource";
 let appId = 'yourAppID';
 ```
 
+
 If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
 
-***Note: Set it to null if you are using ApiSigningUtil L2 RSA256 Signing***
+***Note: Set the secret to null or undefined if you are using ApiSigningUtil L2 RSA256 Signing***
 
 ```
-let secret = 's0m3S3ecreT';
+let secret = 's0m3S3ecreT'; 
 ```
 
-If you are authenticating with ApiSigningUtil L2 , please provide either  (certFileName) or the actual contents (certString)
+If you are authenticating with ApiSigningUtil L2 , please provide either  (certFileName) or the actual contents (certString). 
 
 1)Signing certificate contents
 
@@ -85,9 +86,31 @@ let certFileName = './spec/cert/default.pem';
 let passphrase = 'passphrase for the certFileName';
 ```
 
+Request Data 
+
+1) Form Data (x-www-form-urlencoded) - HTTP POST / HTTP PUT
+
+```
+let formData = {"key" : "value"};
+```
+
+2) Query Parameters  - HTTP GET
+
+Append the query parameters on the url 
+
+```
+ urlPath = path + '?' + querystring.stringify(_.clone(queryParams));
+```
+
+Your urlPath should look something like this
+
+```
+https://test.com/v1/resources?host=https%3A%2F%2Fnd-sleetone1.api.dev&panelName=hello
+```
+
 **Invoking the function for ApiSigningUtil**
 
-Typically, you would only need to retrieve the generated signature token and append it to your HTTP request header
+Typically, you only need to retrieve the generated signature token and append to the HTTP request header
 
 Import the library
 
@@ -102,10 +125,10 @@ let reqProps = {
     "authPrefix": <<authPrefixL1 or authPrefixL2, depending on your use case>>,
     "realm" : realm,
     "appId" : appId,
-    "secret" : secret, //If you are authenticating with L1
-    "urlPath" : urlPath,
+    "secret" : secret, //If you are authenticating with L1, else leave it blank
+    "urlPath" : urlPath, //Append with query paramters if any for HTTP Get Request
     "httpMethod" : httpMethod,
-    "formData" : {},
+    "formData" :  formData , //Append for PUT or POST request using form data 
     "certString" : certString,  //If you are authenticating L2 with the cert contents
     "certFileName" : certFilaName, //If you are authenticating L2 with a cert path
     "passphrase" : passphrase //For L2

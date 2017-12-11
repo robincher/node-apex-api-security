@@ -14,7 +14,8 @@
 + Typedefs has been added for ApiSigningUtil.js
 ### V0.4.2
 + Export typing
-### V0.5
+### V0.5.0
 + Allows client to pass in request as an object for ApiSigningUtil
 + Deprecate getToken interface for ApiSigningUtil
 + Deprecate ApiSecurityUtil
++ Update L1 and L2 to more representative method names

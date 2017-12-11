@@ -122,18 +122,18 @@ Formulate the request object
 
 ```
 let reqProps = {
-    "authPrefix": <<authPrefixL1 or authPrefixL2, depending on your use case>>,
-    "realm" : realm,
-    "appId" : appId,
-    "secret" : secret, //If you are authenticating with L1, else leave it blank
-    "urlPath" : urlPath, //Append with query paramters if any for HTTP Get Request
-    "httpMethod" : httpMethod,
-    "formData" :  formData , //Append for PUT or POST request using form data 
-    "certString" : certString,  //If you are authenticating L2 with the cert contents
-    "certFileName" : certFilaName, //If you are authenticating L2 with a cert path
-    "passphrase" : passphrase //For L2
-    "nonce" : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
-    "timestamp" : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
+    'authPrefix': <<authPrefixL1 or authPrefixL2, depending on your use case>>,
+    'realm' : realm,
+    'appId' : appId,
+    'secret' : secret, //If you are authenticating with L1, else leave it blank
+    'urlPath' : urlPath, //Append with query paramters if any for HTTP Get Request
+    'httpMethod' : httpMethod,
+    'formData' :  formData , //Append for PUT or POST request using form data 
+    'certString' : certString,  //If you are authenticating L2 with the cert contents
+    'certFileName' : certFilaName, //If you are authenticating L2 with a cert path
+    'passphrase' : passphrase //For L2
+    'nonce' : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
+    'timestamp' : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
 }
 ```
 
@@ -148,10 +148,10 @@ Only populate the **formData** parameter if your API request have x-form-urlenco
 
 **Logging**
 
-If you want to log while running the unit test , just set the log level to trace
+If you want to log while running the unit test , just set the log level to **trace**
 
 ```
-ApiSigningUtil.setLogLevel('none');
+ApiSigningUtil.setLogLevel('trace');
 ```
 
 ## Walkthrough for ApiSecurityUtil (Deprecated)
@@ -162,13 +162,13 @@ This interface will be deprecated for the next release. You are encouraged to us
 
 ```
 let L1RequestParams = {
-    "prefix": "apex_l1_eg,
-    "method": "get",
-    "url": "https://tenant.api/v1/test,
-    "appid": "dummy,
-    "secret": "dummy",
-    "params": {},
-    "formData": {}
+    'prefix': 'apex_l1_eg',
+    'method': "get",
+    'url': 'https://tenant.api/v1/test',
+    "appid": 'dummy',
+    'secret': 'dummy',
+    'params': {},
+    'formData': {}
 }
 ```
 
@@ -177,15 +177,15 @@ let L1RequestParams = {
 ```
 
 let L2RequestParams = {
-    "prefix": "apex_l1_eg,
-    "method": "get",
-    "url": "https://tenant.api/v1/test,
-    "appid": "dummy,
-    "secret": undefined,
-    "params": {},
-    "formData": {},
-    "pemFileName": "./spec/cert/somepem.pem",
-    "passphrase": "somepass",
+    'prefix': 'apex_l1_eg',
+    'method': 'get',
+    'url": 'https://tenant.api/v1/test',
+    'appid": 'dummy',
+    'secret": undefined,
+    'params": {},
+    'formData": {},
+    'pemFileName': './spec/cert/somepem.pem',
+    'passphrase"': 'somepass',
 }
 ```
 

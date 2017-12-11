@@ -1,13 +1,12 @@
 export declare function setLogLevel(loglevel: string);
-export declare function getL1Signature(message: string | Buffer, secret: string | Buffer);
-export declare function verifyL1Signature(signature: string, secret: string | Buffer, message: string | Buffer);
-export declare function getL2Signature(message: string | Buffer, privateKey: string, passphrase: string);
-export declare function verifyL2Signature(signature: string, publicKey: string, message: string | Buffer);
+export declare function getHMACSignature(message: string | Buffer, secret: string | Buffer);
+export declare function verifyHMACSignature(signature: string, secret: string | Buffer, message: string | Buffer);
+export declare function getRSASignature(message: string | Buffer, privateKey: string, passphrase: string);
+export declare function verifyRSASignature(signature: string, publicKey: string, message: string | Buffer);
 
 export declare function getPrivateKeyFromPem(pemFileName: string);
 export declare function getPublicKeyFromCer(cerFileName: string);
 
-export declare function getBaseString(authPrefix: string, signatureMethod: string, appId: string, urlPath: string, httpMethod: string, formData?: object, nonce: string, timestamp: number);
 export declare function getSignatureBaseString(baseProps: object);
 
 export declare function getTokenFromSecret(realm: string, authPrefix: string, httpMethod: string, urlPath: string, appId: string, secret: string, formJson?: object, nonce?: string, timestamp?: number);

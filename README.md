@@ -220,17 +220,21 @@ apex_l2_ig_signature_method="SHA256withRSA",
 apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlfUpGvzoccr9CA0wO8jL6VNh6cqPnVjO4bpVnSLQ8iiPOz4JK7kxJ4Cb19sX4pO6sx4srDmNqfnGOp5FeFx/rCr16ecvd3+HJF5sJEeOrDytr+HlOBf9pARVx5GroVSKxsKkXzto5XpJ2MN0Mu8eZA5BNJwune/TnnEy0oqjJWNSE+puGH4jMsp4hgLsJOwxJPS8Zg9dtPzoV60Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A=="
 ```
 
-## Contributing
-+ Check out CONTRIBUTION.md
+### Contributing
++ For more information about contributing PRs and issues, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Release
++ See [CHANGELOG.md](CHANGELOG.md).
+
+## Todo
++ JWT Token verification 
 
 ## References:
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)
 + [RSA and HMAC Request Signing Standard](http://tools.ietf.org/html/draft-cavage-http-signatures-05)
 
-## Todo
-+ JWT Token verification   
+  
 
-## Releases
-+ Check out latest changes at CHANGELOG.md
+
 
 

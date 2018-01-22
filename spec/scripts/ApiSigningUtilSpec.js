@@ -296,6 +296,24 @@ describe('ApiSigning Signature BaseString Test', function () {
 
         };
         expect(ApiSigningUtil.getSignatureBaseString.bind(ApiSigningUtil,
+            baseProps)).to.throw('Invalid URL: ://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊');
+    });
+
+    it('ApiSigning BaseString - Invalid Protocol 03', function () {
+        let urlPath = 'smtp://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            'formData': null,
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702',
+
+        };
+        expect(ApiSigningUtil.getSignatureBaseString.bind(ApiSigningUtil,
             baseProps)).to.throw('Support http and https protocol only!');
     });
 });

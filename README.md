@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
-A node helper utilities that form HTTP security header for API authenticationgit. There are two interfaces as of now, ApiSecurityUtil and ApiSigningUtil,which support different input parameter types.
+A node helper utilities that form HTTP security header for API authentication. 
 
 ## Getting Started
 Include this helper class in your project package json
@@ -32,6 +32,7 @@ Please update the values in the test cases if necessary.
 
 **Preparing the request parameter (Dummy values)**
 
+
 ```
  let realm = 'http://tenant.com/token';
 ```
@@ -56,26 +57,88 @@ Custom API Gateway specific Authorization scheme for a **specific gateway zone**
 API Gateway's App and Api related information that are generated and published through the community or developer portal.
  
 ```
- var url = "https://tenant.com/api/v1/resource";
- var appId = 'yourAppID';
+let urlPath = "https://tenant.com/api/v1/resource";
+let appId = 'yourAppID';
 ```
+
 
 If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
 
-***Note: Set it to null if you are using ApiSigningUtil L2 RSA256 Signing***
+***Note: Set the secret to null or undefined if you are using ApiSigningUtil L2 RSA256 Signing***
 
 ```
-var secret = 's0m3S3ecreT';
+let secret = 's0m3S3ecreT'; 
+```
+
+If you are authenticating with ApiSigningUtil L2 , please provide either  (certFileName) or the actual contents (certString). 
+
+1)Signing certificate contents
+
+```
+let certString = 'Cert Contents here;;
+let passphrase = 'passphrase for the certString';
+```
+
+2) Signing certificate's path and corresponding passphrase
+
+```
+let certFileName = './spec/cert/default.pem'; 
+let passphrase = 'passphrase for the certFileName';
+```
+
+Request Data 
+
+1) Form Data (x-www-form-urlencoded) - HTTP POST / HTTP PUT
+
+```
+let formData = {"key" : "value"};
+```
+
+2) Query Parameters  - HTTP GET
+
+Append the query parameters on the url 
+
+```
+ urlPath = path + '?' + querystring.stringify(_.clone(queryParams));
+```
+
+Your urlPath should look something like this
+
+```
+https://test.com/v1/resources?host=https%3A%2F%2Fnd-sleetone1.api.dev&panelName=hello
 ```
 
 **Invoking the function for ApiSigningUtil**
 
-Typically, you would only need to retrieve the generated signature token and append it to your HTTP request header
+Typically, you only need to retrieve the generated signature token and append to the HTTP request header
+
+Import the library
 
 ```
 const ApiSigningUtil = require('<<package-name-defined').ApiSigningUtil;
+```
 
-let secToken = ApiSigningUtil.getToken(realm, authPrefix, httpMethod, urlPath, appId, secret, formData, passphrase, certFileName);
+Formulate the request object
+
+```
+let reqProps = {
+    'authPrefix': <<authPrefixL1 or authPrefixL2, depending on your use case>>,
+    'realm' : realm,
+    'appId' : appId,
+    'secret' : secret, //If you are authenticating with L1, else leave it blank
+    'urlPath' : urlPath, //Append with query paramters if any for HTTP Get Request
+    'httpMethod' : httpMethod,
+    'formData' :  formData , //Append for PUT or POST request using form data 
+    'certString' : certString,  //If you are authenticating L2 with the cert contents
+    'certFileName' : certFilaName, //If you are authenticating L2 with a cert path
+    'passphrase' : passphrase //For L2
+    'nonce' : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
+    'timestamp' : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
+}
+```
+
+```
+let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
 
 ```
 
@@ -85,25 +148,27 @@ Only populate the **formData** parameter if your API request have x-form-urlenco
 
 **Logging**
 
-If you want to log while running the unit test , just set the log level to trace
+If you want to log while running the unit test , just set the log level to **trace**
 
 ```
-ApiSigningUtil.setLogLevel('none');
+ApiSigningUtil.setLogLevel('trace');
 ```
 
-## Walkthrough for ApiSecurityUtil
+## Walkthrough for ApiSecurityUtil (Deprecated)
+
+This interface will be deprecated for the next release. You are encouraged to use ApiSigningUtil instead.
 
 **Preparing the request parameter (Dummy values)**
 
 ```
 let L1RequestParams = {
-    "prefix": "apex_l1_eg,
-    "method": "get",
-    "url": "https://tenant.api/v1/test,
-    "appid": "dummy,
-    "secret": "dummy",
-    "params": {},
-    "formData": {}
+    'prefix': 'apex_l1_eg',
+    'method': "get",
+    'url': 'https://tenant.api/v1/test',
+    "appid": 'dummy',
+    'secret': 'dummy',
+    'params': {},
+    'formData': {}
 }
 ```
 
@@ -112,15 +177,15 @@ let L1RequestParams = {
 ```
 
 let L2RequestParams = {
-    "prefix": "apex_l1_eg,
-    "method": "get",
-    "url": "https://tenant.api/v1/test,
-    "appid": "dummy,
-    "secret": undefined,
-    "params": {},
-    "formData": {},
-    "pemFileName": "./spec/cert/somepem.pem",
-    "passphrase": "somepass",
+    'prefix': 'apex_l1_eg',
+    'method': 'get',
+    'url": 'https://tenant.api/v1/test',
+    'appid": 'dummy',
+    'secret": undefined,
+    'params": {},
+    'formData": {},
+    'pemFileName': './spec/cert/somepem.pem',
+    'passphrase"': 'somepass',
 }
 ```
 
@@ -155,22 +220,21 @@ apex_l2_ig_signature_method="SHA256withRSA",
 apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlfUpGvzoccr9CA0wO8jL6VNh6cqPnVjO4bpVnSLQ8iiPOz4JK7kxJ4Cb19sX4pO6sx4srDmNqfnGOp5FeFx/rCr16ecvd3+HJF5sJEeOrDytr+HlOBf9pARVx5GroVSKxsKkXzto5XpJ2MN0Mu8eZA5BNJwune/TnnEy0oqjJWNSE+puGH4jMsp4hgLsJOwxJPS8Zg9dtPzoV60Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A=="
 ```
 
-## Contributing
+### Contributing
++ For more information about contributing PRs and issues, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Easy as 1-2-3:
+### Release
++ See [CHANGELOG.md](CHANGELOG.md).
 
-  + Step 1: Branch off from ```development``` and work on your feature or hotfix.
-  + Step 2: Update the changelog.
-  + Step 3: Create a pull request when you're done.
+## Todo
++ JWT Token verification 
 
 ## References:
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)
 + [RSA and HMAC Request Signing Standard](http://tools.ietf.org/html/draft-cavage-http-signatures-05)
 
-## Todo
-+ JWT Token verification   
+  
 
-## Releases
-+ Check out latest changes at CHANGELOG.md
+
 
 

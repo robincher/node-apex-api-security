@@ -19,3 +19,7 @@
 + Deprecate getToken interface for ApiSigningUtil
 + Deprecate ApiSecurityUtil
 + Update L1 and L2 to more representative method names
+### V0.6.0
++ Recompile for Node 8
++ Update ApiSigningUtil URL interface
++ Update ApiSigningUtil test specification

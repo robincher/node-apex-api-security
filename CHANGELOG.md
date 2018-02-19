@@ -23,3 +23,6 @@
 + Recompile for Node 8
 + Update ApiSigningUtil URL interface
 + Update ApiSigningUtil test specification
+### V0.6.1
++ Remove unused validator dependency
++ Add package-lock json

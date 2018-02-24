@@ -1,9 +1,19 @@
-# APEX API Node JS Security Utility
+# APEX API Node.js Security Utility
 [![Build Status](https://travis-ci.org/GovTechSG/node-apex-api-security.svg?branch=master)](https://travis-ci.org/GovTechSG/node-apex-api-security)
 [![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
 A node helper utilities that form HTTP security header for API authentication. 
+
+## Table of Contents
+- [APEX API Node.js Security Utility](#apex-api-node.js-security-utility)
+- [Getting Started](#getting-started)
+    * [Interface Walkthrough](#walkthrough)
+    * [Security Signature Token Example](#security-signature-token-example)
+- [Contributing](#contributing)
+- [Release](#release)
+- [License](#license)
+- [References](#references)
 
 ## Getting Started
 Include this helper class in your project package json
@@ -28,7 +38,7 @@ npm test
 
 Please update the values in the test cases if necessary.
 
-## Walkthrough for ApiSigningUtil
+### Walkthrough
 
 **Preparing the request parameter (Dummy values)**
 
@@ -167,7 +177,10 @@ apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlf
 ## Release
 + See [CHANGELOG.md](CHANGELOG.md).
 
-## References:
+## License
+[MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)
+
+## References
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)
 + [RSA and HMAC Request Signing Standard](http://tools.ietf.org/html/draft-cavage-http-signatures-05)
 

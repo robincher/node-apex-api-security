@@ -565,7 +565,7 @@ describe('ApiSigning (Deprecated) Token Test', function () {
             let liveUrl = 'https://example.com/api/v1/resource';
             let httpMethod = 'get';
 
-            ApiSigningUtil.sendRequest(liveUrl, null, null, httpMethod).
+            ApiSigningUtil.sendRequest(liveUrl, null,null,null, httpMethod).
                 then(function (data) {
                     expect(data.status).to.equal(200);
                     done();
@@ -575,9 +575,9 @@ describe('ApiSigning (Deprecated) Token Test', function () {
                 });
         });
 
-        it('Api Signed Token - L1 Live Test', function (done) {
+        it('Api Signed Token - HMAC256 L1 Live Test', function (done) {
             let liveUrl = 'https://example.com/api/v1/resource';
-            let token = ApiSigningUtil.getToken(realm, authPrefixL1, httpMethod,
+            let token = ApiSigningUtil.getTokenFromSecret(realm, authPrefixL1, httpMethod,
                 liveUrl, appId, secret);
 
             ApiSigningUtil.sendRequest(liveUrl, token, null, httpMethod).
@@ -590,10 +590,10 @@ describe('ApiSigning (Deprecated) Token Test', function () {
                 });
         });
 
-        it('Api Signed Token - L2 Live Test', function (done) {
+        it('Api Signed Token - RSA256 L2 Live Test', function (done) {
             let liveUrl = 'https://example.com/api/v1/resource';
-            let token = ApiSigningUtil.getToken(realm, authPrefixL2, httpMethod,
-                liveUrl, appId, null, null, passphrase, certFileName);
+            let token = ApiSigningUtil.getTokenFromCertFileName(realm, authPrefixL2, httpMethod,
+                liveUrl, appId, null, passphrase, certFileName);
 
             ApiSigningUtil.sendRequest(liveUrl, token, null, httpMethod).
                 then(function (data) {

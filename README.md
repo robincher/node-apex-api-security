@@ -1,9 +1,19 @@
-# APEX API Node JS Security Utility
+# APEX API Node.js Security Utility
 [![Build Status](https://travis-ci.org/GovTechSG/node-apex-api-security.svg?branch=master)](https://travis-ci.org/GovTechSG/node-apex-api-security)
 [![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
 A node helper utilities that form HTTP security header for API authentication. 
+
+## Table of Contents
+- [APEX API Node.js Security Utility](#apex-api-node.js-security-utility)
+- [Getting Started](#getting-started)
+    * [Interface Walkthrough](#walkthrough)
+    * [Security Signature Token Example](#security-signature-token-example)
+- [Contributing](#contributing)
+- [Release](#release)
+- [License](#license)
+- [References](#references)
 
 ## Getting Started
 Include this helper class in your project package json
@@ -28,7 +38,7 @@ npm test
 
 Please update the values in the test cases if necessary.
 
-## Walkthrough for ApiSigningUtil
+### Walkthrough
 
 **Preparing the request parameter (Dummy values)**
 
@@ -154,82 +164,23 @@ If you want to log while running the unit test , just set the log level to **tra
 ApiSigningUtil.setLogLevel('trace');
 ```
 
-## Walkthrough for ApiSecurityUtil (Deprecated)
-
-This interface will be deprecated for the next release. You are encouraged to use ApiSigningUtil instead.
-
-**Preparing the request parameter (Dummy values)**
-
-```
-let L1RequestParams = {
-    'prefix': 'apex_l1_eg',
-    'method': "get",
-    'url': 'https://tenant.api/v1/test',
-    "appid": 'dummy',
-    'secret': 'dummy',
-    'params': {},
-    'formData': {}
-}
-```
-
-***Note 1: Set secret to null or undefined if you are using ApiSecurity L2 RSA256 Signing (L2RequestParams)***
-
-```
-
-let L2RequestParams = {
-    'prefix': 'apex_l1_eg',
-    'method': 'get',
-    'url": 'https://tenant.api/v1/test',
-    'appid": 'dummy',
-    'secret": undefined,
-    'params": {},
-    'formData": {},
-    'pemFileName': './spec/cert/somepem.pem',
-    'passphrase"': 'somepass',
-}
-```
-
-***Note 2: Request Query parameters that are set to undefined or null will be ignore during the formation of Signature's BaseString***
-
-```
-  //Remove undefined or null query params from signing using Lodash
-   if(!_.isNil(reqProps.params)) {
-        reqProps.params = _.pickBy(reqProps.params, _.identity);
-   }
-```
-
-***Note 3: Passing query param and x-form-urlencoded data***
-
-Only populate the **formData** parameter if your API request have x-form-urlencoded data or query parameters. 
-
-**Invoking the function for ApiSecurityUtil**
-
-Same as above, just retrieve the token and append it to your HTTP request header
-
-```
-const ApiSecurityUtil = require('<<package-name-defined').ApiSecurityUtil;
-
-let secToken = ApiSecurityUtil.getSecurityToken(<<RequestParams>);
-
-```
-
-## Security Signature Token Example
+### Security Signature Token Example
 ```
 Apex_l2_ig realm="http://tenant.com/token", apex_l2_ig_timestamp="1502199514462", apex_l2_ig_nonce="-5816789581922453013", apex_l2_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", 
 apex_l2_ig_signature_method="SHA256withRSA", 
 apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlfUpGvzoccr9CA0wO8jL6VNh6cqPnVjO4bpVnSLQ8iiPOz4JK7kxJ4Cb19sX4pO6sx4srDmNqfnGOp5FeFx/rCr16ecvd3+HJF5sJEeOrDytr+HlOBf9pARVx5GroVSKxsKkXzto5XpJ2MN0Mu8eZA5BNJwune/TnnEy0oqjJWNSE+puGH4jMsp4hgLsJOwxJPS8Zg9dtPzoV60Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A=="
 ```
 
-### Contributing
-+ For more information about contributing PRs and issues, see [CONTRIBUTING.md](CONTRIBUTING.md).
+## Contributing
++ For more information about contributing PRs and issues, see [CONTRIBUTING.md](https://github.com/GovTechSG/node-apex-api-security/blob/master/.github/CONTRIBUTING.md).
 
-### Release
+## Release
 + See [CHANGELOG.md](CHANGELOG.md).
 
-## Todo
-+ JWT Token verification 
+## License
+[MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)
 
-## References:
+## References
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)
 + [RSA and HMAC Request Signing Standard](http://tools.ietf.org/html/draft-cavage-http-signatures-05)
 

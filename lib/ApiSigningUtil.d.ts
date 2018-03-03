@@ -15,4 +15,4 @@ export declare function getTokenFromCertString(realm: string, authPrefix: string
 export declare function getToken(realm: string, authPrefix: string, httpMethod: string, urlPath: string, appId: string, secret?: string, formJson?: object, passphrase?: string, certFileName?: string, nonce?: string, timestamp?: number, certString?: string);
 export declare function getSignatureToken(reqProps: object);
 
-export declare function makeHttpRequest(urlPath: string, token: string, formData?: object, httpMethod: string, port: number);
+export declare function sendRequest(urlPath: string, token: string, formData?: object, httpMethod: string, port: number);

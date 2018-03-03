@@ -26,3 +26,6 @@
 ### V0.6.1
 + Remove unused validator dependency
 + Add package-lock json
+### V0.7.0
++ Remove ApiSecurityUtil and test class
++ Refine Readme

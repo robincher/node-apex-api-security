@@ -29,3 +29,5 @@
 ### V0.7.0
 + Remove ApiSecurityUtil and test class
 + Refine Readme
+### V0.7.1
++ Add support to handle QueryString as parameter to the getSignatureToken API

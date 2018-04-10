@@ -369,6 +369,21 @@ describe('ApiSigning Signature Token Test', function() {
         expect(sigToken).to.equal(expectedTokenL1WithQueryParams);
     });
 
+    it('Api Signed Signature Token - Basic L1 without setting nonce and timestamp', function() {
+        let reqProps = {
+            'authPrefix': authPrefixL1,
+            'realm': realm,
+            'appId': appId,
+            'secret': secret,
+            'urlPath': urlPath,
+            'httpMethod': httpMethod
+        };
+
+        let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
+        expect(sigToken).to.include(authPrefixL1.toLowerCase() + '_timestamp=');
+        expect(sigToken).to.include(authPrefixL1.toLowerCase() + '_nonce=');
+    });
+
     it('Api Signed Signature  Token - Basic L2 Test with cert file',
         function() {
 

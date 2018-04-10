@@ -242,8 +242,8 @@ describe('ApiSigning L2 RSA256 Signature Test', function () {
 
 describe('ApiSigning Signature BaseString Test', function () {
     it('ApiSigning BaseString - Basic Test', function () {
-        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊';
-        let expectedBaseString = 'GET&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=1355584618267440511&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502175057654&apex_l1_ig_version=1.0';
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?bcd=裕廊坊%20心邻坊';
+        let expectedBaseString = `GET&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&abc=def&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=1355584618267440511&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502175057654&apex_l1_ig_version=1.0&bcd=裕廊坊 心邻坊&message=my keys should be sorted&xyz=zyx`
 
         let baseProps = {
             'authPrefix': 'Apex_L1_IG',
@@ -252,9 +252,13 @@ describe('ApiSigning Signature BaseString Test', function () {
             'urlPath': urlPath,
             'httpMethod': 'get',
             'formData': null,
+            'queryString': {
+                message: 'my keys should be sorted',
+                xyz: 'zyx',
+                abc: 'def',
+            },
             'nonce': '1355584618267440511',
-            'timestamp': '1502175057654',
-
+            'timestamp': '1502175057654'
         };
 
         let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
@@ -276,7 +280,6 @@ describe('ApiSigning Signature BaseString Test', function () {
             'formData': formData,
             'nonce': '6584351262900708156',
             'timestamp': '1502184161702',
-
         };
 
         let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
@@ -356,10 +359,9 @@ describe('ApiSigning Signature Token Test', function () {
 
     let expectedTokenL1 = 'Apex_l1_ig realm="https://example.com", apex_l1_ig_timestamp="1502199514462", apex_l1_ig_nonce="-5816789581922453013", apex_l1_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", apex_l1_ig_signature_method="HMACSHA256", apex_l1_ig_signature="ua32WiJ7FfDOZKuaaVDJyF12Yq0a8leTt5KAtHcTQc0=", apex_l1_ig_version="1.0"';
     let expectedTokenL2 = 'Apex_l2_ig realm="https://example.com", apex_l2_ig_timestamp="1502199514462", apex_l2_ig_nonce="-5816789581922453013", apex_l2_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", apex_l2_ig_signature_method="SHA256withRSA", apex_l2_ig_signature="rIb8tCUt2gghoZ0FsRTmDcbngW8UjeEs8UdMLC7y/ptmTyo1D8D4wZ0BPVJj3wB/r/VqiqGkl9axow2pTXM8jfZ0bavhIokqRNucv1yoEhsoGy6QnxeXymi2MJI+0XtUhsyIwwmNqVSCzFCFmviIGgPtGqGJ7+w6ABTupw/v38BExiKHbiMYnG1SzYXkv/qaQfEntrzgeWyPi8LxEX2p/6NxE7j3eRfBWXgipXNOoomGrPDcuRVGi2lxZntNqpVyTYKZbcXkFf/ZJNSaUcCTX97zebWFKB8F6cui7clLznqcQFwgLzamt9xDVu4FU56xjVvd2eqUZ+h5W2OX9QPm2IgCFqSpXSrziDFagi7tUVwLr3QstiW3qLxCXdMMYNPjewAe5vN0MJsSitadKIfNh9r4geWyB8dyuHATGiFSYITRY9n8k0CWjjEAOto94XPw3Fw/M9DV/8nLiHow2d+ul+IQijc8P72kIGi6b0fjXYDzq06v7WnNvl9vC5DY2gCaD4hFrzFX1jC9S4jKodGIUN0Xb1LNxw/mnjhACHL/tWBcu9SZ5HwHZSzRoBsKWZJPhiF+bqsvny3h4jJfg68l6SuqC9SzENtytJrEzGIZBxTW5hxfKBUVjIu6CoW2F54bbet7O8N63R3j8N3Q4HhWiFuXVDRBBpko/eMfNccfxrM=", apex_l2_ig_version="1.0"';
-    let certFileName = path.join(process.cwd(),
-        'spec/cert/ssc.alpha.example.com.pem');
+    let expectedTokenL1WithQueryParams = `Apex_l1_ig realm="https://example.com", apex_l1_ig_timestamp="1502199514462", apex_l1_ig_nonce="-5816789581922453013", apex_l1_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", apex_l1_ig_signature_method="HMACSHA256", apex_l1_ig_signature="BBBR/H23cfehhC+runhdd7/fCNy9F6K9oC1W1L9sQVE=", apex_l1_ig_version="1.0"`
+    let certFileName = path.join(process.cwd(), 'spec/cert/ssc.alpha.example.com.pem');
     let passphrase = 'passwordpem';
-
 
     it('Api Signed Signature  Token - Basic L1 Test', function () {
 
@@ -377,6 +379,28 @@ describe('ApiSigning Signature Token Test', function () {
 
         let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
         expect(sigToken).to.equal(expectedTokenL1);
+    });
+
+    it('Api Signed Signature Token - Basic L1 with query strings', function() {
+        let reqProps = {
+            'authPrefix': authPrefixL1,
+            'realm': realm,
+            'appId': appId,
+            'secret': secret,
+            'urlPath': urlPath,
+            'httpMethod': httpMethod,
+            'formData': null,
+            'queryString': {
+                message: 'my keys should be sorted',
+                xyz: 'zyx',
+                abc: 'def',
+            },
+            'nonce': nonce,
+            'timestamp': timestamp
+        };
+
+        let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
+        expect(sigToken).to.equal(expectedTokenL1WithQueryParams);
     });
 
     it('Api Signed Signature  Token - Basic L2 Test with cert file',

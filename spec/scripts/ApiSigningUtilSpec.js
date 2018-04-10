@@ -2,7 +2,7 @@
 const path = require('path');
 const ApiSigningUtil = require('../../lib/ApiSigningUtil');
 
-ApiSigningUtil.setLogLevel('trace');
+// ApiSigningUtil.setLogLevel('trace');
 
 describe('ApiSigning L1 HMACSHA256 Signature Test', function () {
     let secret = 'secret';

@@ -209,7 +209,7 @@ describe('ApiSigning L2 RSA256 Signature Test', function() {
 
 
 describe('ApiSigning Signature BaseString Test', function() {
-    it('ApiSigning BaseString - Basic Test', function() {
+    it('ApiSigning BaseString - Basic Test, with urlencoded query params', function() {
         let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?bcd=裕廊坊%20心邻坊';
         let expectedBaseString = `GET&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&abc=def&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=1355584618267440511&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502175057654&apex_l1_ig_version=1.0&bcd=裕廊坊 心邻坊&message=my keys should be sorted&xyz=zyx`;
 

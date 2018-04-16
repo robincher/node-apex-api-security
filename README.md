@@ -4,12 +4,11 @@
 [![Coverage Status](https://coveralls.io/repos/github/GovTechSG/node-apex-api-security/badge.svg?branch=master)](https://coveralls.io/github/GovTechSG/node-apex-api-security?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/govtechsg/node-apex-api-security/badge.svg)](https://snyk.io/test/github/govtechsg/node-apex-api-security)
 
-A node helper utilities that form HTTP security header for API authentication. 
+A Javascript utility that generates HTTP security headers for authenticating with secured Apex endpoints, for Node.js.
 
 ## Table of Contents
-- [APEX API Node.js Security Utility](#apex-api-node.js-security-utility)
 - [Getting Started](#getting-started)
-    * [Interface Walkthrough](#walkthrough)
+    * [API Usage](#api-usage)
     * [Security Signature Token Example](#security-signature-token-example)
 - [Contributing](#contributing)
 - [Release](#release)
@@ -17,84 +16,122 @@ A node helper utilities that form HTTP security header for API authentication.
 - [References](#references)
 
 ## Getting Started
-Include this helper class in your project package json
+
+Add this package as a dependency in `package.json`.
 
 ```
-  "dependencies": {
-  "node-apex-api-security": "git+https://your-repo-location/node-apex-api-security.git",
-  }
+"dependencies": {
+    "node-apex-api-security": "git+https://github.com/GovTechSG/node-apex-api-security.git",
+}
 ```
 
-Re-build your node packages if needed
+### Installation
 
 ```
-npm install
+$ npm install
 ```
 
-Test both interfaces.  Self-signed testing certificates can be located at spec/cert. 
+### API Usage
 
+#### `ApiSigningUtil.getSignatureToken(options)`
+
+Returns a signature token used for authentication with a secured Apex API.
+
+##### L1 Secured API
+
+```javascript
+const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
+
+// Required options for L1 authentication
+const requestOptions = {
+    appId: 'my-app-id',                     // Apex App ID
+    secret: 'my-app-secret',                // Apex App Secret
+    authPrefix: 'apex_l1_eg',               // Authentication prefix, determined by authentication level and gateway type
+    httpMethod: 'get',                      // HTTP method, e.g. GET/POST
+    urlPath: 'https://my.apex.api.endpoint' // URL to Apex API
+};
+
+const L1SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
-npm test
+
+##### L2 Secured API
+
+```javascript
+const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
+
+// Required options for L2 authentication
+const requestOptions = {
+    appId: 'my-app-id',                       // Apex App ID
+    certFileName: '/path/to/my/private.key',  // Path to private key used for L2 signature
+    authPrefix: 'apex_l2_eg',                 // Authentication prefix, determined by authentication level and gateway type
+    httpMethod: 'get',                        // HTTP method, e.g. GET/POST
+    urlPath: 'https://my.apex.api.endpoint'   // URL to Apex API
+};
+
+const L2SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
-Please update the values in the test cases if necessary.
+##### All Options
 
-### Walkthrough
+`appId`
 
-**Preparing the request parameter (Dummy values)**
+Apex App ID. The API Gateway's App and Api information are generated and published through the community or developer portal.
 
-
+```javascript
+let appId = 'my-app-id';
 ```
- let realm = 'http://tenant.com/token';
-```
 
-It identifies the fact that the message comes from the realm for your app
+`authPrefix`
 
-+ If the incoming message is not signed, the platform expects the AppID and doesn't look for the realm value.
-+ If the incoming message is signed, the platform looks for the realm parameter. If it exists, the platform uses the same realm value when sending an authentication challenge. If the value isn't specified, the platform uses this value:
-
-Custom API Gateway specific Authorization scheme for a **specific gateway zone**. 
+Custom API Gateway specific Authorization scheme for a **specific gateway zone**. Takes 4 possible values.
  
-```
- let authPrefixL1 = 'Apex_l1_ig';
- let authPrefixL2 = 'Apex_l2_ig';
-```
- The Api HTTP Call operation method
- 
-```
- let httpMethod = 'get';
+```javascript
+let authPrefix = 'Apex_l1_ig'; 
+// or
+let authPrefix = 'Apex_l1_eg';
+// or
+let authPrefix = 'Apex_l2_ig';
+// or
+let authPrefix = 'Apex_l2_eg';
 ```
 
-API Gateway's App and Api related information that are generated and published through the community or developer portal.
+`httpMethod`
+
+ The API HTTP method
  
+```javascript
+let httpMethod = 'get';
 ```
+
+`urlPath`
+
+The full API endpoint
+ 
+```javascript
 let urlPath = "https://tenant.com/api/v1/resource";
-let appId = 'yourAppID';
 ```
 
+`secret` - Required for L1 signature
 
-If you are authenticating with ApiSigningUtil L1 , please provide the App secret generated. 
+If the API you are accessing is secured with an L1 policy, you need to provide the generated App secret that corresponds to the `appId` provided.
 
-***Note: Set the secret to null or undefined if you are using ApiSigningUtil L2 RSA256 Signing***
+**Note: Set the secret to null or undefined if you are using ApiSigningUtil L2 RSA256 Signing**
 
-```
+```javascript
 let secret = 's0m3S3ecreT'; 
 ```
 
-If you are authenticating with ApiSigningUtil L2 , please provide either  (certFileName) or the actual contents (certString). 
+`certString` or `certFileName`
 
-1)Signing certificate contents
+If the API you are access is secured with an L2 policy, you need to provide the private key corresponding to the public key uploaded for `appId`.
 
-```
-let certString = 'Cert Contents here;;
+Please provide either the path to your private key used to generate your L2 signature `certFileName` or the actual contents `certString`.
+
+```javascript
+let certFileName = '/path/to/my/private.key';
+// or
+let certString = '----BEGIN PRIVATE KEY ----\n ${private_key_contents} \n -----END PRIVATE KEY-----';
 let passphrase = 'passphrase for the certString';
-```
-
-2) Signing certificate's path and corresponding passphrase
-
-```
-let certFileName = './spec/cert/default.pem'; 
-let passphrase = 'passphrase for the certFileName';
 ```
 
 Request Data 

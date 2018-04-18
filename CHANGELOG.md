@@ -31,3 +31,5 @@
 + Refine Readme
 ### V0.7.1
 + Add support to handle QueryString as parameter to the getSignatureToken API
+### V0.7.2
++ Added default value for realm in getSignatureToken

@@ -19,7 +19,7 @@ A Javascript utility that generates HTTP security headers for authenticating wit
 
 Add this package as a dependency in `package.json`.
 
-```
+```json
 "dependencies": {
     "node-apex-api-security": "git+https://github.com/GovTechSG/node-apex-api-security.git",
 }
@@ -33,11 +33,11 @@ $ npm install
 
 ### API Usage
 
-#### `ApiSigningUtil.getSignatureToken(options)`
+**`ApiSigningUtil.getSignatureToken(options)`**
 
 Returns a signature token used for authentication with a secured Apex API.
 
-##### L1 Secured API
+#### L1 Secured API
 
 ```javascript
 const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
@@ -45,16 +45,17 @@ const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
 // Required options for L1 authentication
 const requestOptions = {
     appId: 'my-app-id',                     // Apex App ID
-    secret: 'my-app-secret',                // Apex App Secret
+    secret: 'my-app-secret',                // Apex App secret used for L1 signature
     authPrefix: 'apex_l1_eg',               // Authentication prefix, determined by authentication level and gateway type
     httpMethod: 'get',                      // HTTP method, e.g. GET/POST
-    urlPath: 'https://my.apex.api.endpoint' // URL to Apex API
+    urlPath: 'https://my.apex.api/endpoint' // URL to Apex API
 };
 
+// Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
 const L1SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
-##### L2 Secured API
+#### L2 Secured API
 
 ```javascript
 const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
@@ -65,25 +66,35 @@ const requestOptions = {
     certFileName: '/path/to/my/private.key',  // Path to private key used for L2 signature
     authPrefix: 'apex_l2_eg',                 // Authentication prefix, determined by authentication level and gateway type
     httpMethod: 'get',                        // HTTP method, e.g. GET/POST
-    urlPath: 'https://my.apex.api.endpoint'   // URL to Apex API
+    urlPath: 'https://my.apex.api/endpoint'   // URL to Apex API
 };
 
+// Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
 const L2SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
-##### All Options
+The generated token should then be added to the `Authorization` header when making HTTP API calls:
 
-`appId`
+```
+GET /endpoint HTTP/1.1
+Host: my.apex.api
+Authorization: Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
+...
+```
 
-Apex App ID. The API Gateway's App and Api information are generated and published through the community or developer portal.
+#### Core Options
+
+- `appId`
+
+Apex App ID. The App needs to be approved and activated by the API provider. This value can be obtained from the gateway portal.
 
 ```javascript
 let appId = 'my-app-id';
 ```
 
-`authPrefix`
+- `authPrefix`
 
-Custom API Gateway specific Authorization scheme for a **specific gateway zone**. Takes 4 possible values.
+API gateway-specific authorization scheme for a specific gateway zone. Takes 1 of 4 possible values.
  
 ```javascript
 let authPrefix = 'Apex_l1_ig'; 
@@ -95,7 +106,7 @@ let authPrefix = 'Apex_l2_ig';
 let authPrefix = 'Apex_l2_eg';
 ```
 
-`httpMethod`
+- `httpMethod`
 
  The API HTTP method
  
@@ -103,29 +114,30 @@ let authPrefix = 'Apex_l2_eg';
 let httpMethod = 'get';
 ```
 
-`urlPath`
+- `urlPath`
 
 The full API endpoint
  
 ```javascript
-let urlPath = "https://tenant.com/api/v1/resource";
+let urlPath = "https://my.apex.api/v1/resources?host=https%3A%2F%2Fnd-hello.api.example.comß&panelName=hello";
 ```
 
-`secret` - Required for L1 signature
+- `secret` - **Required for L1 signature**
 
 If the API you are accessing is secured with an L1 policy, you need to provide the generated App secret that corresponds to the `appId` provided.
 
-**Note: Set the secret to null or undefined if you are using ApiSigningUtil L2 RSA256 Signing**
+**Note: leave `secret` undefined if you are using ApiSigningUtil L2 RSA256 Signing**
 
 ```javascript
 let secret = 's0m3S3ecreT'; 
 ```
 
-`certString` or `certFileName`
+- `certString` *or* `certFileName` - **Required for L2 signature**
+- (optional) `passphrase`
 
 If the API you are access is secured with an L2 policy, you need to provide the private key corresponding to the public key uploaded for `appId`.
 
-Please provide either the path to your private key used to generate your L2 signature `certFileName` or the actual contents `certString`.
+Provide *either* the path to your private key used to generate your L2 signature in `certFileName` or the actual contents in `certString`.
 
 ```javascript
 let certFileName = '/path/to/my/private.key';
@@ -134,79 +146,60 @@ let certString = '----BEGIN PRIVATE KEY ----\n ${private_key_contents} \n -----E
 let passphrase = 'passphrase for the certString';
 ```
 
-Request Data 
+#### Optional options
 
-1) Form Data (x-www-form-urlencoded) - HTTP POST / HTTP PUT
+- `realm`
 
-```
-let formData = {"key" : "value"};
-```
+An identifier for the caller, this can be set to any value.
 
-2) Query Parameters  - HTTP GET
+- `formData`
 
-Append the query parameters on the url 
+Object representation of form fata (x-www-form-urlencoded) passed during HTTP POST / HTTP PUT requests
 
-```
- urlPath = path + '?' + querystring.stringify(_.clone(queryParams));
+```javascript
+let formData = {key : 'value'};
 ```
 
-Your urlPath should look something like this
+- `queryString`
 
-```
-https://test.com/v1/resources?host=https%3A%2F%2Fnd-sleetone1.api.dev&panelName=hello
-```
+Object representation of URL query parameters, for the API.
 
-**Invoking the function for ApiSigningUtil**
+**Note: you can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.**
 
-Typically, you only need to retrieve the generated signature token and append to the HTTP request header
-
-Import the library
-
-```
-const ApiSigningUtil = require('<<package-name-defined').ApiSigningUtil;
+```javascript
+ // For example, if the endpoint contains a query string: https://api.example.com?abc=def&ghi=123
+ let queryString = {
+     abc: 'def',
+     ghi: 123
+ }
 ```
 
-Formulate the request object
+- `nonce`
 
-```
-let reqProps = {
-    'authPrefix': <<authPrefixL1 or authPrefixL2, depending on your use case>>,
-    'realm' : realm,
-    'appId' : appId,
-    'secret' : secret, //If you are authenticating with L1, else leave it blank
-    'urlPath' : urlPath, //Append with query paramters if any for HTTP Get Request
-    'httpMethod' : httpMethod,
-    'formData' :  formData , //Append for PUT or POST request using form data 
-    'certString' : certString,  //If you are authenticating L2 with the cert contents
-    'certFileName' : certFilaName, //If you are authenticating L2 with a cert path
-    'passphrase' : passphrase //For L2
-    'nonce' : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
-    'timestamp' : <<Can ignore this or set it as null as it will be auto-generated during runtime>>
-}
-```
+An arbitrary number, needs to be different after each successful API call. Defaults to the current unix timestamp.
 
-```
-let sigToken = ApiSigningUtil.getSignatureToken(reqProps);
+- `timestamp`
 
-```
-
-**Passing query param and x-form-urlencoded data**
-
-Only populate the **formData** parameter if your API request have x-form-urlencoded data or query parameters. 
+A unix timestamp. Defaults to the current unix timestamp.
 
 **Logging**
 
-If you want to log while running the unit test , just set the log level to **trace**
+To see detailed logs while using ApiSigningUtil, set the log level to **trace**
 
-```
+```javascript
 ApiSigningUtil.setLogLevel('trace');
 ```
 
 ### Security Signature Token Example
+
 ```
-Apex_l2_ig realm="http://tenant.com/token", apex_l2_ig_timestamp="1502199514462", apex_l2_ig_nonce="-5816789581922453013", apex_l2_ig_app_id="loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ", 
-apex_l2_ig_signature_method="SHA256withRSA", 
-apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlfUpGvzoccr9CA0wO8jL6VNh6cqPnVjO4bpVnSLQ8iiPOz4JK7kxJ4Cb19sX4pO6sx4srDmNqfnGOp5FeFx/rCr16ecvd3+HJF5sJEeOrDytr+HlOBf9pARVx5GroVSKxsKkXzto5XpJ2MN0Mu8eZA5BNJwune/TnnEy0oqjJWNSE+puGH4jMsp4hgLsJOwxJPS8Zg9dtPzoV60Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A=="
+Authorization: Apex_l2_ig realm="http://api.mygateway.com",
+apex_l2_ig_timestamp="1502199514462",
+apex_l2_ig_nonce="-5816789581922453013",
+apex_l2_ig_app_id="my-apex-app-id",
+apex_l2_ig_signature_method="SHA256withRSA",
+apex_l2_ig_signature="Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A==",
+apex_l2_ig_version="1.0"
 ```
 
 ## Contributing
@@ -221,9 +214,3 @@ apex_l2_ig_signature="CH1GtfF2OYGYDAY5TH40Osez86mInZmgZETIOZCGvATBnjDcmCi6blkOlf
 ## References
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)
 + [RSA and HMAC Request Signing Standard](http://tools.ietf.org/html/draft-cavage-http-signatures-05)
-
-  
-
-
-
-

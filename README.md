@@ -214,3 +214,4 @@ apex_l2_ig_version="1.0"
 ## References
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)
 + [RSA and HMAC Request Signing Standard](http://tools.ietf.org/html/draft-cavage-http-signatures-05)
++ [Signature Token Validator](https://github.com/GovTechSG/apex-signature-validator)

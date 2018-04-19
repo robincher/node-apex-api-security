@@ -384,6 +384,18 @@ describe('ApiSigning Signature Token Test', function() {
         expect(sigToken).to.include(authPrefixL1.toLowerCase() + '_nonce=');
     });
 
+    it('Api Signed Signature Token - Basic L1 with missing credentials', function() {
+        let reqProps = {
+            'authPrefix': authPrefixL1,
+            'realm': realm,
+            'appId': appId,
+            'urlPath': urlPath,
+            'httpMethod': httpMethod
+        };
+
+        expect(function() {ApiSigningUtil.getSignatureToken(reqProps)}).to.throw('No secret or key specified for signing!');
+    });
+
     it('Api Signed Signature  Token - Basic L2 Test with cert file',
         function() {
 

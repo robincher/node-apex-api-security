@@ -63,7 +63,7 @@ const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
 // Required options for L2 authentication
 const requestOptions = {
     appId: 'my-app-id',                       // Apex App ID
-    certFileName: '/path/to/my/private.key',  // Path to private key used for L2 signature
+    keyFile: '/path/to/my/private.key',  // Path to private key used for L2 signature
     authPrefix: 'apex_l2_eg',                 // Authentication prefix, determined by authentication level and gateway type
     httpMethod: 'get',                        // HTTP method, e.g. GET/POST
     urlPath: 'https://my.apex.api/endpoint'   // URL to Apex API
@@ -132,18 +132,18 @@ If the API you are accessing is secured with an L1 policy, you need to provide t
 let secret = 's0m3S3ecreT'; 
 ```
 
-- `certString` *or* `certFileName` - **Required for L2 signature**
+- `keyString` *or* `keyFile` - **Required for L2 signature**
 - (optional) `passphrase`
 
 If the API you are access is secured with an L2 policy, you need to provide the private key corresponding to the public key uploaded for `appId`.
 
-Provide *either* the path to your private key used to generate your L2 signature in `certFileName` or the actual contents in `certString`.
+Provide *either* the path to your private key used to generate your L2 signature in `keyFile` or the actual contents in `keyString`.
 
 ```javascript
-let certFileName = '/path/to/my/private.key';
+let keyFile = '/path/to/my/private.key';
 // or
-let certString = '----BEGIN PRIVATE KEY ----\n ${private_key_contents} \n -----END PRIVATE KEY-----';
-let passphrase = 'passphrase for the certString';
+let keyString = '----BEGIN PRIVATE KEY ----\n ${private_key_contents} \n -----END PRIVATE KEY-----';
+let passphrase = 'passphrase for the keyString';
 ```
 
 #### Optional options

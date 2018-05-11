@@ -18,18 +18,10 @@ A Javascript utility that generates HTTP security headers for authenticating wit
 
 ## Getting Started
 
-Add this package as a dependency in `package.json`.
-
-```json
-"dependencies": {
-    "node-apex-api-security": "~v0.7.4",
-}
-```
-
 ### Installation
 
 ```
-$ npm install
+$ npm install node-apex-api-security
 ```
 
 ### API Usage

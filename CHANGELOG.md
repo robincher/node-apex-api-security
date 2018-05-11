@@ -33,3 +33,5 @@
 + Add support to handle QueryString as parameter to the getSignatureToken API
 ### V0.7.2
 + Added default value for realm in getSignatureToken
+### V0.7.4
++ Prepare for publishing and update package metadata

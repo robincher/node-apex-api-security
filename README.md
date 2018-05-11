@@ -22,7 +22,7 @@ Add this package as a dependency in `package.json`.
 
 ```json
 "dependencies": {
-    "node-apex-api-security": "git+https://github.com/GovTechSG/node-apex-api-security.git",
+    "node-apex-api-security": "~v0.7.4",
 }
 ```
 

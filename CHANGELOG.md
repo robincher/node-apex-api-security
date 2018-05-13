@@ -37,3 +37,5 @@
 + Prepare for publishing and update package metadata
 ### V0.7.5
 + Added logic to getSignatureBaseString to generate nonce and timestamp.
+### V0.7.6
++ Update package.json to fix sub-dependency vulnerabilities

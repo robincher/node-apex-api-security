@@ -1,6 +1,6 @@
 {
   "name": "node-apex-api-security",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "APEX API security utiity. Includes helper operations to generate HMAC-SHA256 and RSA-SHA256 signatures",
   "main": "index.js",
   "types": "index.d.ts",
@@ -21,9 +21,9 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.1",
     "mocha": "^5.1.1",
-    "nyc": "^10.3.2"
+    "nyc": "^11.7.3"
   },
   "repository": {
     "type": "git",

@@ -109,8 +109,8 @@ let httpMethod = 'get';
 
 - `urlPath`
 
-The full API endpoint
- 
+The full API endpoint, for example https://my-apex-api.api.gov.sg/api/my/specific/data. **Note: Must be the endpoint URL as served from the Apex gateway, from the domain api.gov.sg. This may differ from the actual HTTP endpoint that you are calling, for example if it were behind a proxy with a different URL.**
+
 ```javascript
 let urlPath = "https://my.apex.api/v1/resources?host=https%3A%2F%2Fnd-hello.api.example.comß&panelName=hello";
 ```

@@ -55,12 +55,12 @@ const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
 
 // Required options for L2 authentication
 const requestOptions = {
-    appId: 'my-app-id',                       // Apex App ID
-    keyFile: '/path/to/my/private.key',       // Path to private key used for L2 signature
-    // keyString: '----BEGIN PRIVATE KEY-----...' // Alternatively, pass in the PEM formatted private key's string directly
-    authPrefix: 'apex_l2_eg',                 // Authentication prefix, determined by authentication level and gateway type
-    httpMethod: 'get',                        // HTTP method, e.g. GET/POST
-    urlPath: 'https://my.apex.api/endpoint'   // URL to Apex API
+    appId: 'my-app-id',                         // Apex App ID
+    keyString: '----BEGIN PRIVATE KEY-----...', // The PEM formatted private key's string directly
+    // keyFile: '/path/to/my/private.key',      // Alternatively, simply pass in the path to private key used for L2 signature
+    authPrefix: 'apex_l2_eg',                   // Authentication prefix, determined by authentication level and gateway type
+    httpMethod: 'get',                          // HTTP method, e.g. GET/POST
+    urlPath: 'https://my.apex.api/endpoint'     // URL to Apex API
 };
 
 // Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"

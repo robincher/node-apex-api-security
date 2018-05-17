@@ -30,7 +30,7 @@ $ npm install node-apex-api-security
 
 Returns a signature token used for authentication with a secured Apex API.
 
-#### L1 Secured API
+#### APEX L1 Secured API (HMACSHA256)
 
 ```javascript
 const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
@@ -48,7 +48,7 @@ const requestOptions = {
 const L1SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
-#### L2 Secured API
+#### APEX L2 Secured API (SHA256withRSA)
 
 ```javascript
 const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
@@ -63,7 +63,7 @@ const requestOptions = {
     urlPath: 'https://my.apex.api/endpoint'     // URL to Apex API
 };
 
-// Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
+// Apex_l2_ig realm="https://my.apex.api/endpoint",apex_l2_ig_app_id="my-app-id",apex_l2_ig_nonce="152393542217300",apex_l2_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l2_ig_signature_method="SHA256withRSA",apex_l2_ig_timestamp="1523935422173",apex_l2_ig_version="1.0"
 const L2SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
@@ -197,10 +197,10 @@ apex_l2_ig_version="1.0"
 ```
 
 ## Contributing
-+ For more information about contributing PRs and issues, see [CONTRIBUTING.md](https://github.com/GovTechSG/node-apex-api-security/blob/master/.github/CONTRIBUTING.md).
+For more information about contributing, and raising PRs or issues, see [CONTRIBUTING.md](https://github.com/GovTechSG/node-apex-api-security/blob/master/.github/CONTRIBUTING.md).
 
 ## Release
-+ See [CHANGELOG.md](CHANGELOG.md).
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 [MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)

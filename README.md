@@ -56,7 +56,8 @@ const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
 // Required options for L2 authentication
 const requestOptions = {
     appId: 'my-app-id',                       // Apex App ID
-    keyFile: '/path/to/my/private.key',  // Path to private key used for L2 signature
+    keyFile: '/path/to/my/private.key',       // Path to private key used for L2 signature
+    // keyString: '----BEGIN PRIVATE KEY-----...' // Alternatively, pass in the PEM formatted private key's string directly
     authPrefix: 'apex_l2_eg',                 // Authentication prefix, determined by authentication level and gateway type
     httpMethod: 'get',                        // HTTP method, e.g. GET/POST
     urlPath: 'https://my.apex.api/endpoint'   // URL to Apex API

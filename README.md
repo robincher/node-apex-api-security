@@ -30,7 +30,9 @@ $ npm install node-apex-api-security
 
 Returns a signature token used for authentication with a secured Apex API.
 
-#### APEX L1 Secured API (HMACSHA256)
+#### APEX L1 Secured API
+
+Authorization token with **HMACSHA256** signature
 
 ```javascript
 const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;
@@ -48,7 +50,9 @@ const requestOptions = {
 const L1SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
-#### APEX L2 Secured API (SHA256withRSA)
+#### APEX L2 Secured API 
+
+Authorization token with **SHA256withRSA** signature
 
 ```javascript
 const ApiSigningUtil = require('node-apex-api-security').ApiSigningUtil;

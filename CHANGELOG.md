@@ -39,3 +39,5 @@
 + Added logic to getSignatureBaseString to generate nonce and timestamp.
 ### V0.7.6
 + Update package.json to fix sub-dependency vulnerabilities
+### V0.7.7
++ Remove nonce node library

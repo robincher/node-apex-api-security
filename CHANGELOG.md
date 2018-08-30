@@ -41,3 +41,11 @@
 + Update package.json to fix sub-dependency vulnerabilities
 ### V0.7.7
 + Remove nonce node library
+### V0.7.8
++ Enhance BaseString handling and bug fixed
+    * Add support to handle QuerySrting and FormData with null value i.e. { "queryString" : { "param1" : null, "param2" : "" }, "formData" : { "param3" : null, "param4" : "" } }
+    * Add support to handle QuerySrting and FormData with empty string i.e. { "queryString" : { "param1" : null, "param2" : "" }, "formData" : { "param3" : null, "param4" : "" } }
+    * Add support to handle QuerySrting and FormData with array values i.e. { "queryString" : { "param1" : [ "value1", "value2" ] }, "formData" : { "param3" : [ "value3", "value4" ] } }
+    * Add support to handle QuerySrting and FormData with object values i.e. { "queryString" : { "param1" : { "subParam1" : "subvalue2" } }, "formData" : { "param3" : { "subParam3" : "subvalue3" } } }. Please note that param1 and param3 will be send as empty string, and the subvalue will be ignore.
+    * Add support to handle URL QuerySrting with empty string value i.e. ?param1=&param2=value2&param3
+    * Add support to handle URL QuerySrting with duplicate name parameters i.e. ?param1=&param2=value2&param1=another+item

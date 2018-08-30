@@ -46,7 +46,7 @@ const requestOptions = {
     urlPath: 'https://my.apex.api/endpoint' // URL to Apex API
 };
 
-// Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
+// Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="UldycUAF56GWJGlWz0YSwOOp5gruJqvBy0CJeZ4XpGk=",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
 const L1SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
@@ -67,7 +67,7 @@ const requestOptions = {
     urlPath: 'https://my.apex.api/endpoint'     // URL to Apex API
 };
 
-// Apex_l2_ig realm="https://my.apex.api/endpoint",apex_l2_ig_app_id="my-app-id",apex_l2_ig_nonce="152393542217300",apex_l2_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l2_ig_signature_method="SHA256withRSA",apex_l2_ig_timestamp="1523935422173",apex_l2_ig_version="1.0"
+// Apex_l2_ig realm="https://my.apex.api/endpoint",apex_l2_ig_app_id="my-app-id",apex_l2_ig_nonce="UldycUAF56GWJGlWz0YSwOOp5gruJqvBy0CJeZ4XpGk=",apex_l2_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l2_ig_signature_method="SHA256withRSA",apex_l2_ig_timestamp="1523935422173",apex_l2_ig_version="1.0"
 const L2SignatureToken = ApiSigningUtil.getSignatureToken(requestOptions);
 ```
 
@@ -76,7 +76,7 @@ The generated token should then be added to the `Authorization` header when maki
 ```
 GET /endpoint HTTP/1.1
 Host: my.apex.api
-Authorization: Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="152393542217300",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
+Authorization: Apex_l1_ig realm="https://my.apex.api/endpoint",apex_l1_ig_app_id="my-app-id",apex_l1_ig_nonce="UldycUAF56GWJGlWz0YSwOOp5gruJqvBy0CJeZ4XpGk=",apex_l1_ig_signature="u5nTX4ZbkL8c9pp5C79VHu07QPPLG9yx2VxpLX7kqGM=",apex_l1_ig_signature_method="HMACSHA256",apex_l1_ig_timestamp="1523935422173",apex_l1_ig_version="1.0"
 ...
 ```
 
@@ -174,7 +174,7 @@ Object representation of URL query parameters, for the API.
 
 - `nonce`
 
-An arbitrary number, needs to be different after each successful API call. Defaults to the current unix timestamp.
+An arbitrary string, needs to be different after each successful API call. Defaults to 32 bytes random value encoded in base64.
 
 - `timestamp`
 
@@ -193,7 +193,7 @@ ApiSigningUtil.setLogLevel('trace');
 ```
 Authorization: Apex_l2_ig realm="http://api.mygateway.com",
 apex_l2_ig_timestamp="1502199514462",
-apex_l2_ig_nonce="-5816789581922453013",
+apex_l2_ig_nonce="UldycUAF56GWJGlWz0YSwOOp5gruJqvBy0CJeZ4XpGk=",
 apex_l2_ig_app_id="my-apex-app-id",
 apex_l2_ig_signature_method="SHA256withRSA",
 apex_l2_ig_signature="Gigxd7Yif2NqiFGI3oi0D3+sVv3QxURLPwCSE9ARyeenYhipG+6gncCR+tWEfaQBGyH9gnG6RtwZh3A==",

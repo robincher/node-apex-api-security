@@ -309,6 +309,64 @@ describe('ApiSigning Signature BaseString Test', function() {
         expect(ApiSigningUtil.getSignatureBaseString.bind(ApiSigningUtil,
             baseProps)).to.throw('Support http and https protocol only!');
     });
+
+    it('ApiSigning BaseString - Duplicate name in QueryString (URL) Test 01', function() {
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊&ap=duplicate+name';
+        let expectedBaseString = 'POST&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=duplicate name&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=6584351262900708156&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502184161702&apex_l1_ig_version=1.0';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            'formData': null,
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702'
+        };
+        let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
+
+        expect(baseString).to.equal(expectedBaseString);
+    });
+
+    it('ApiSigning BaseString - Multiple name in QueryString Test 02', function() {
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊&ap=duplicate+name';
+        let expectedBaseString = 'POST&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=duplicate name&ap=duplicate+name+new&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=6584351262900708156&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502184161702&apex_l1_ig_version=1.0&clientname=node.js.test.l1&data=some data value';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            "queryString" : { "clientname" : "node.js.test.l1", "data" : "some data value", "ap" : "duplicate+name+new" },
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702'
+        };
+        let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
+
+        expect(baseString).to.equal(expectedBaseString);
+    });
+
+    it('ApiSigning BaseString - QueryString/formData with array, json object, null value and empty param Test 03', function() {
+        let urlPath = 'https://loadtest-pvt.api.lab:443/api/v1/rest/level1/in-in/?ap=裕廊坊%20心邻坊&ap=duplicate+name&emptyParam=';
+        let expectedBaseString = 'POST&https://loadtest-pvt.api.lab/api/v1/rest/level1/in-in/&ap=ap in formData&ap=duplicate name&ap=duplicate+name+new&ap=裕廊坊 心邻坊&apex_l1_ig_app_id=loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ&apex_l1_ig_nonce=6584351262900708156&apex_l1_ig_signature_method=HMACSHA256&apex_l1_ig_timestamp=1502184161702&apex_l1_ig_version=1.0&arrayData=value1&arrayData=value2&clientname=node.js.test.l1&data=some data value&emptyParam&jsonObject&nullValue';
+
+        let baseProps = {
+            'authPrefix': 'Apex_L1_IG',
+            'signatureMethod': 'HMACSHA256',
+            'appId': 'loadtest-pvt-4Swyn7qwKeO32EXdH1dKTeIQ',
+            'urlPath': urlPath,
+            'httpMethod': 'post',
+            'queryString' : { "clientname" : "node.js.test.l1", "data" : "some data value", "ap" : "duplicate+name+new", "nullValue" : null },
+            'formData': { "ap" : "ap in formData", "arrayData" : [ "value1", "value2" ], "jsonObject" : { "this": "value", "not" : "send to server on post"} },
+            'nonce': '6584351262900708156',
+            'timestamp': '1502184161702'
+        };
+        let baseString = ApiSigningUtil.getSignatureBaseString(baseProps);
+
+        expect(baseString).to.equal(expectedBaseString);
+    });
 });
 
 describe('ApiSigning Signature Token Test', function() {

@@ -162,14 +162,29 @@ let formData = {key : 'value'};
 
 Object representation of URL query parameters, for the API.
 
-**Note: you can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.**
+**IMPORTANT NOTE for version v0.7.7 and below : You can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.**
+
+**IMPORTANT NOTE from v0.7.8 onwards : If you pass in the params in queryString or formData, please remove the queryString from the urlPath parameter**
+
+For example, the API endpoint is https://example.com/v1/api?key=value , then you have you pass in the params in this manner below :
+
 
 ```javascript
  // For example, if the endpoint contains a query string: https://api.example.com?abc=def&ghi=123
- let queryString = {
+ let qsData = {
      abc: 'def',
      ghi: 123
  }
+ 
+ //Prepare request options for signature formation
+const requestOptions = {
+    appId: 'my-app-id',                     // Apex App ID
+    secret: 'my-app-secret',                // Apex App secret used for L1 signature
+    authPrefix: 'apex_l1_eg',               // Authentication prefix, determined by authentication level and gateway type
+    httpMethod: 'get',                      // HTTP method, e.g. GET/POST
+    urlPath: 'https://api.example.com'      // URL that remove away the queryString
+    queryString : qsData
+};
 ```
 
 - `nonce`

@@ -114,7 +114,9 @@ let httpMethod = 'get';
 
 - `urlPath`
 
-The full API endpoint, for example https://my-apex-api.api.gov.sg/api/my/specific/data. **Note: Must be the endpoint URL as served from the Apex gateway, from the domain api.gov.sg. This may differ from the actual HTTP endpoint that you are calling, for example if it were behind a proxy with a different URL.**
+The full API endpoint, for example https://my-apex-api.api.gov.sg/api/my/specific/data. 
+
+**Note: Must be the endpoint URL as served from the Apex gateway, from the domain api.gov.sg. This may differ from the actual HTTP endpoint that you are calling, for example if it were behind a proxy with a different URL.**
 
 ```javascript
 let urlPath = "https://my.apex.api/v1/resources?host=https%3A%2F%2Fnd-hello.api.example.comß&panelName=hello";
@@ -162,9 +164,9 @@ let formData = {key : 'value'};
 
 Object representation of URL query parameters, for the API.
 
-**IMPORTANT NOTE for version v0.7.7 and below : You can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.**
+**IMPORTANT NOTE** For version **v0.7.7** and below : You can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.
 
-**IMPORTANT NOTE from v0.7.8 onwards : If you pass in the params in queryString or formData, please remove the queryString from the urlPath parameter**
+**IMPORTANT NOTE** From **v0.7.8** onwards : If you pass in the params in queryString or formData, please **remove** the queryString from the urlPath parameter
 
 For example, the API endpoint is https://example.com/v1/api?key=value , then you have you pass in the params in this manner below :
 

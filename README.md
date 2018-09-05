@@ -207,7 +207,7 @@ For more information about contributing, and raising PRs or issues, see [CONTRIB
 See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
-[MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)
+Licensed under the [MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)
 
 ## References
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)

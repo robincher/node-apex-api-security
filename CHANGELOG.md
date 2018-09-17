@@ -6,7 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### V1.0.0
 + Bump to version 1.0.0 major release candidate
 + Removed deprecated interfaces getTokenFromSecret, getTokenFromCertFileName and getTokenFromCertString
-+ Code clean-up and spec updates
++ Update default params handling
++ Code clean-up and improve coverage
++ Add new test case that use standard test data 
 + Refresh and update dependencies
 
 ### V0.7.8

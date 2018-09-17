@@ -10,7 +10,7 @@ const CertPath = './node_modules/test-suites-apex-api-security/';
 
 const NODEJS = 'nodejs';
 
-apiHelper.setLogLevel('none')
+apiHelper.setLogLevel('none');
 
 let params = {};
 let testDescription = 'Test';

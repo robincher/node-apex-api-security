@@ -10,6 +10,8 @@ const CertPath = './node_modules/test-suites-apex-api-security/'
 
 const NODEJS = 'nodejs'
 
+apiHelper.setLogLevel("none")
+
 let params = {}
 let testDescription = 'Test'
 
@@ -36,8 +38,51 @@ function getExpectedResult(param) {
     return param.expectedResult.nodejs != undefined ? param.expectedResult.nodejs : param.expectedResult;
 }
 
+function setExpectedResult(param, newValue) {
+    if (param.expectedResult.nodejs == undefined)
+        param.expectedResult = newValue;
+    else
+        param.expectedResult.nodejs  = newValue;
+}
 
 /** Test Cases **/
+params = require(BasePath + 'testData/defaultParams.json');
+testDescription = 'getDefaultParam Test';
+perfromTest(testDescription, params, (param) => {
+    expect(apiHelper.getDefaultParam
+        .bind(apiHelper, param.apiParam))
+        .to.throw(getExpectedResult(param));
+}, (param) => {
+    let result = "";
+
+    var dynamicTimestamp = false
+    if (param.apiParam.timestamp == undefined || param.apiParam.timestamp == "") {
+        dynamicTimestamp = true
+    }
+    var dynamicNonce = false
+    if (param.apiParam.nonce == undefined || param.apiParam.nonce == "") {
+        dynamicNonce = true
+    }
+
+    let defaultParams = apiHelper.getDefaultParam(param.apiParam);
+
+    let expectedResult = ""
+    // timestamp value not set in input param, update the expected result after getDefaultParam set the value
+    if (dynamicTimestamp) {
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.timestamp))
+    }
+    if (dynamicNonce) {
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce))
+    }
+
+    let keys = Object.keys(defaultParams);
+    keys.forEach(function(key){
+        result = result + "&" + key + "=" + defaultParams[key];
+    });
+
+    return result;
+} );
+
 params = require(BasePath + 'testData/getL1Signature.json');
 testDescription = 'getHMACSignature Test';
 perfromTest(testDescription, params, (param) => {
@@ -113,7 +158,7 @@ params = require(BasePath + 'testData/getSignatureToken.json');
 testDescription = 'getSignatureToken Test';
 perfromTest(testDescription, params, (param) => {
     if (param.apiParam.privateCertFileName != undefined) {
-        param.apiParam.certFileName = path.join("spec/cert", param.apiParam.privateCertFileName);
+        param.apiParam.certFileName = path.join(CertPath, param.apiParam.privateCertFileName);
     }
     expect(apiHelper.getSignatureToken
         .bind(apiHelper, param.apiParam))

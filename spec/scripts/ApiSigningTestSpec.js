@@ -1,19 +1,19 @@
 'use strict';
-const _ = require("lodash");
+const _ = require('lodash');
 const path = require('path');
 const util = require('util');
 
 const apiHelper = require('../../lib/ApiSigningUtil');
 
-const BasePath = '../../node_modules/test-suites-apex-api-security/'
-const CertPath = './node_modules/test-suites-apex-api-security/'
+const BasePath = '../../node_modules/test-suites-apex-api-security/';
+const CertPath = './node_modules/test-suites-apex-api-security/';
 
-const NODEJS = 'nodejs'
+const NODEJS = 'nodejs';
 
-apiHelper.setLogLevel("none")
+apiHelper.setLogLevel('none')
 
-let params = {}
-let testDescription = 'Test'
+let params = {};
+let testDescription = 'Test';
 
 /** test helper function **/
 function perfromTest(desc, params, errorTest, normalTest) {
@@ -21,7 +21,7 @@ function perfromTest(desc, params, errorTest, normalTest) {
         _.forEach(params, (param) => {
             if (!(param.skipTest && param.skipTest.includes(NODEJS))) {
                 it(param.id + ". " + param.description, function() {
-                    param.apiParam.urlPath = param.apiParam.signatureUrl
+                    param.apiParam.urlPath = param.apiParam.signatureUrl;
                     if (param.errorTest) {
                         errorTest(param);
                     } else {
@@ -31,18 +31,20 @@ function perfromTest(desc, params, errorTest, normalTest) {
                 });
             }
         });
-    })
+    });
 }
 
 function getExpectedResult(param) {
-    return param.expectedResult.nodejs != undefined ? param.expectedResult.nodejs : param.expectedResult;
+    return param.expectedResult.nodejs !== undefined ? param.expectedResult.nodejs : param.expectedResult;
 }
 
 function setExpectedResult(param, newValue) {
-    if (param.expectedResult.nodejs == undefined)
+    if (param.expectedResult.nodejs === undefined) {
         param.expectedResult = newValue;
-    else
-        param.expectedResult.nodejs  = newValue;
+    }
+    else{
+        param.expectedResult.nodejs = newValue;
+    }
 }
 
 /** Test Cases **/
@@ -53,26 +55,26 @@ perfromTest(testDescription, params, (param) => {
         .bind(apiHelper, param.apiParam))
         .to.throw(getExpectedResult(param));
 }, (param) => {
-    let result = "";
+    let result = '';
+    let dynamicTimestamp = false;
+    let dynamicNonce = false;
 
-    var dynamicTimestamp = false
-    if (param.apiParam.timestamp == undefined || param.apiParam.timestamp == "") {
-        dynamicTimestamp = true
+    if (param.apiParam.timestamp === undefined || param.apiParam.timestamp === "") {
+        dynamicTimestamp = true;
     }
-    var dynamicNonce = false
-    if (param.apiParam.nonce == undefined || param.apiParam.nonce == "") {
-        dynamicNonce = true
+   
+    if (param.apiParam.nonce === undefined || param.apiParam.nonce === "") {
+        dynamicNonce = true;
     }
 
     let defaultParams = apiHelper.getDefaultParam(param.apiParam);
 
-    let expectedResult = ""
     // timestamp value not set in input param, update the expected result after getDefaultParam set the value
     if (dynamicTimestamp) {
-        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.timestamp))
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.timestamp));
     }
     if (dynamicNonce) {
-        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce))
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce));
     }
 
     let keys = Object.keys(defaultParams);
@@ -91,7 +93,7 @@ perfromTest(testDescription, params, (param) => {
         .to.throw(getExpectedResult(param));
 }, (param) => {
     return apiHelper.getHMACSignature(param.message, param.apiParam.secret);
-} );
+});
 
 
 params = require(BasePath + 'testData/verifyL1Signature.json');
@@ -157,42 +159,38 @@ perfromTest(testDescription, params, (param) => {
 params = require(BasePath + 'testData/getSignatureToken.json');
 testDescription = 'getSignatureToken Test';
 perfromTest(testDescription, params, (param) => {
-    if (param.apiParam.privateCertFileName != undefined) {
+    if (param.apiParam.privateCertFileName !== undefined) {
         param.apiParam.certFileName = path.join(CertPath, param.apiParam.privateCertFileName);
     }
     expect(apiHelper.getSignatureToken
         .bind(apiHelper, param.apiParam))
         .to.throw(getExpectedResult(param));
 }, (param) => {
-    if (param.apiParam.privateCertFileName != undefined) {
+    if (param.apiParam.privateCertFileName !== undefined) {
         param.apiParam.certFileName = path.join(CertPath, param.apiParam.privateCertFileName);
     }
 
-    var dynamicTimestamp = false
-    if (param.apiParam.timestamp == undefined || param.apiParam.timestamp == "") {
-        dynamicTimestamp = true
+    let dynamicTimestamp = false;
+    if (param.apiParam.timestamp === undefined || param.apiParam.timestamp === '') {
+        dynamicTimestamp = true;
     }
 
-    var dynamicNonce = false
+    let dynamicNonce = false;
     if (param.apiParam.nonce == undefined || param.apiParam.nonce == "") {
-        dynamicNonce = true
+        dynamicNonce = true;
     }
 
     let result = apiHelper.getSignatureToken(param.apiParam);
 
     if (dynamicTimestamp && dynamicNonce) {
         //console.log(">>> timestamp %s, nonce %s <<<", param.apiParam.timestamp, param.apiParam.nonce)
-
         param.expectedResult = util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.timestamp, param.apiParam.signature)
     } else if (dynamicTimestamp) {
         //console.log(">>> timestamp %s <<<", param.apiParam.timestamp)
-
         param.expectedResult = util.format(getExpectedResult(param), param.apiParam.timestamp, param.apiParam.signature)
     } else if (dynamicNonce) {
         //console.log(">>> nonce %s <<<", param.apiParam.nonce)
-
         param.expectedResult = util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.signature)
     }
-
     return result;
-} );
+});

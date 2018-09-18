@@ -48,11 +48,7 @@ function setExpectedResult(param, newValue) {
 /** Test Cases **/
 params = require(BasePath + 'testData/defaultParams.json');
 testDescription = 'getDefaultParam Test';
-perfromTest(testDescription, params, (param) => {
-    expect(apiHelper.getDefaultParam
-        .bind(apiHelper, param.apiParam))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     let result = "";
 
     var dynamicTimestamp = false
@@ -96,22 +92,14 @@ perfromTest(testDescription, params, (param) => {
 
 params = require(BasePath + 'testData/verifyL1Signature.json');
 testDescription = 'verifyHMACSignature Test';
-perfromTest(testDescription, params, (param) => {
-    expect(apiHelper.verifyHMACSignature
-        .bind(apiHelper, param.apiParam.signature, param.apiParam.secret, param.message))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     return String(apiHelper.verifyHMACSignature(param.apiParam.signature, param.apiParam.secret, param.message));
 } );
 
 
 params = require(BasePath + 'testData/getL2Signature.json');
 testDescription = 'getRSASignature Test';
-perfromTest(testDescription, params, (param) => {
-    expect(getRSASignature
-        .bind(this, param.message, param.apiParam.passphrase, param.apiParam.privateCertFileName))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     return getRSASignature(param.message, param.apiParam.passphrase, param.apiParam.privateCertFileName);
 } );
 
@@ -146,11 +134,7 @@ function verifyL2Signature(param){
 
 params = require(BasePath + 'testData/getSignatureBaseString.json');
 testDescription = 'getSignatureBaseString Test';
-perfromTest(testDescription, params, (param) => {
-    expect(apiHelper.getSignatureBaseString
-        .bind(apiHelper, param.apiParam))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     return apiHelper.getSignatureBaseString(param.apiParam);
 } );
 
@@ -183,15 +167,15 @@ perfromTest(testDescription, params, (param) => {
     if (dynamicTimestamp && dynamicNonce) {
         //console.log(">>> timestamp %s, nonce %s <<<", param.apiParam.timestamp, param.apiParam.nonce)
 
-        param.expectedResult = util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.timestamp, param.apiParam.signature)
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.timestamp, param.apiParam.signature))
     } else if (dynamicTimestamp) {
         //console.log(">>> timestamp %s <<<", param.apiParam.timestamp)
 
-        param.expectedResult = util.format(getExpectedResult(param), param.apiParam.timestamp, param.apiParam.signature)
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.timestamp, param.apiParam.signature))
     } else if (dynamicNonce) {
         //console.log(">>> nonce %s <<<", param.apiParam.nonce)
 
-        param.expectedResult = util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.signature)
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.signature))
     }
 
     return result;

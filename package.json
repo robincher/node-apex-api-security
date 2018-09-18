@@ -7,14 +7,12 @@
   "license": "MIT",
   "engineStrict": true,
   "engines": {
-    "node": "^8.x.x"
+    "node": "^8.12.x"
   },
   "dependencies": {
-    "bluebird": "^3.5.2",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
     "querystring": "^0.2.0",
-    "superagent": "^3.8.3",
     "test-suites-apex-api-security": "git+https://github.com/GovTechSG/test-suites-apex-api-security.git",
     "winston": "^2.4.4"
   },

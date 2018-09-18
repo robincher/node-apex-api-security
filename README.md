@@ -166,9 +166,9 @@ let formData = {key : 'value'};
 
 Object representation of URL query parameters, for the API.
 
-**IMPORTANT NOTE for version v0.7.7 and below : You can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.**
+**IMPORTANT NOTE** For version **v0.7.7** and below : You can also leave the query string on the urlPath parameter; it will automatically be extracted, and you won't have to use this parameter.
 
-**IMPORTANT NOTE from v0.7.8 onwards : If you pass in the params in queryString or formData, please remove the queryString from the urlPath parameter**
+**IMPORTANT NOTE** From **v0.7.8** onwards : If you pass in the params in queryString or formData, please **remove** the queryString from the urlPath parameter
 
 For example, the API endpoint is https://example.com/v1/api?key=value , then you have you pass in the params in this manner below :
 

@@ -35,15 +35,14 @@ function perfromTest(desc, params, errorTest, normalTest) {
 }
 
 function getExpectedResult(param) {
-    return param.expectedResult.nodejs !== undefined ? param.expectedResult.nodejs : param.expectedResult;
+    return param.expectedResult.nodejs !== undefined ? param.expectedResult.nodejs : param.expectedResult.default !== undefined ? param.expectedResult.default : null;
 }
 
 function setExpectedResult(param, newValue) {
-    if (param.expectedResult.nodejs === undefined) {
-        param.expectedResult = newValue;
-    }
-    else{
+    if (param.expectedResult.nodejs !== undefined) {
         param.expectedResult.nodejs = newValue;
+    } else {
+        param.expectedResult.default = newValue;
     }
 }
 

@@ -35,26 +35,21 @@ function perfromTest(desc, params, errorTest, normalTest) {
 }
 
 function getExpectedResult(param) {
-    return param.expectedResult.nodejs !== undefined ? param.expectedResult.nodejs : param.expectedResult;
+    return param.expectedResult.nodejs !== undefined ? param.expectedResult.nodejs : param.expectedResult.default !== undefined ? param.expectedResult.default : null;
 }
 
 function setExpectedResult(param, newValue) {
-    if (param.expectedResult.nodejs === undefined) {
-        param.expectedResult = newValue;
-    }
-    else{
+    if (param.expectedResult.nodejs !== undefined) {
         param.expectedResult.nodejs = newValue;
+    } else {
+        param.expectedResult.default = newValue;
     }
 }
 
 /** Test Cases **/
 params = require(BasePath + 'testData/defaultParams.json');
 testDescription = 'getDefaultParam Test';
-perfromTest(testDescription, params, (param) => {
-    expect(apiHelper.getDefaultParam
-        .bind(apiHelper, param.apiParam))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     let result = '';
     let dynamicTimestamp = false;
     let dynamicNonce = false;
@@ -98,11 +93,7 @@ perfromTest(testDescription, params, (param) => {
 
 params = require(BasePath + 'testData/verifyL1Signature.json');
 testDescription = 'verifyHMACSignature Test';
-perfromTest(testDescription, params, (param) => {
-    expect(apiHelper.verifyHMACSignature
-        .bind(apiHelper, param.apiParam.signature, param.apiParam.secret, param.message))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     return String(apiHelper.verifyHMACSignature(param.apiParam.signature, param.apiParam.secret, param.message));
 } );
 
@@ -115,7 +106,7 @@ perfromTest(testDescription, params, (param) => {
         .to.throw(getExpectedResult(param));
 }, (param) => {
     return getRSASignature(param.message, param.apiParam.passphrase, param.apiParam.privateCertFileName);
-} );
+});
 
 function getRSASignature(message, passphrase, privateCertFileName) {
     let privateKey = apiHelper.getPrivateKeyFromPem(
@@ -148,11 +139,7 @@ function verifyL2Signature(param){
 
 params = require(BasePath + 'testData/getSignatureBaseString.json');
 testDescription = 'getSignatureBaseString Test';
-perfromTest(testDescription, params, (param) => {
-    expect(apiHelper.getSignatureBaseString
-        .bind(apiHelper, param.apiParam))
-        .to.throw(getExpectedResult(param));
-}, (param) => {
+perfromTest(testDescription, params, null, (param) => {
     return apiHelper.getSignatureBaseString(param.apiParam);
 } );
 
@@ -184,13 +171,16 @@ perfromTest(testDescription, params, (param) => {
 
     if (dynamicTimestamp && dynamicNonce) {
         //console.log(">>> timestamp %s, nonce %s <<<", param.apiParam.timestamp, param.apiParam.nonce)
-        param.expectedResult = util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.timestamp, param.apiParam.signature)
+
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.timestamp, param.apiParam.signature))
     } else if (dynamicTimestamp) {
         //console.log(">>> timestamp %s <<<", param.apiParam.timestamp)
-        param.expectedResult = util.format(getExpectedResult(param), param.apiParam.timestamp, param.apiParam.signature)
+
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.timestamp, param.apiParam.signature))
     } else if (dynamicNonce) {
         //console.log(">>> nonce %s <<<", param.apiParam.nonce)
-        param.expectedResult = util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.signature)
+
+        setExpectedResult(param, util.format(getExpectedResult(param), param.apiParam.nonce, param.apiParam.signature))
     }
     return result;
 });

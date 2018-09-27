@@ -118,6 +118,8 @@ The full API endpoint, for example https://my-apex-api.api.gov.sg/api/my/specifi
 
 **Note: Must be the endpoint URL as served from the Apex gateway, from the domain api.gov.sg. This may differ from the actual HTTP endpoint that you are calling, for example if it were behind a proxy with a different URL.**
 
+**IMPORTANT NOTE from v0.7.8 onwards : If you are intending pass in the query params in optional parameters queryString or formData, please remove the queryString from the urlPath. Checkout the [optional](#optional-options) section**
+
 ```javascript
 let urlPath = "https://my.apex.api/v1/resources?host=https%3A%2F%2Fnd-hello.api.example.comß&panelName=hello";
 ```
@@ -224,7 +226,7 @@ For more information about contributing, and raising PRs or issues, see [CONTRIB
 See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
-[MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)
+Licensed under the [MIT LICENSE ](https://github.com/GovTechSG/node-apex-api-security/blob/master/LICENSE)
 
 ## References
 + [Akana API Consumer Security](http://docs.akana.com/ag/cm_policies/using_api_consumer_app_sec_policy.htm)

@@ -156,7 +156,7 @@ An identifier for the caller, this can be set to any value.
 
 - `formData`
 
-Object representation of form fata (x-www-form-urlencoded) passed during HTTP POST / HTTP PUT requests
+Object representation of form data (x-www-form-urlencoded) passed during HTTP POST / HTTP PUT requests
 
 ```javascript
 let formData = {key : 'value'};

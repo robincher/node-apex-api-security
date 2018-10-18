@@ -1,0 +1,4 @@
+{
+    "plugins": "security",
+    "extends": "security/recommended"
+}

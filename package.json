@@ -1,6 +1,6 @@
 {
   "name": "node-apex-api-security",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "APEX API security utiity. Includes helper operations to generate HMAC-SHA256 and RSA-SHA256 signatures",
   "main": "index.js",
   "types": "index.d.ts",
@@ -38,6 +38,9 @@
   "homepage": "git+https://github.com/GovTechSG/node-apex-api-security.git#readme",
   "scripts": {
     "test": "./node_modules/.bin/mocha --opts spec/support/mocha.opts --recursive spec/scripts/",
-    "test-travis-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "test-travis-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "lint": "eslint lib/*.js",
+    "lint-fix": "eslint --fix lib/*.js",
+    "lint-fix-dry-run": "eslint --fix-dry-run lib/*.js"
   }
 }

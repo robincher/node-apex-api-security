@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### V1.0.2
++ Eslint config and linting for library
+
 ### V1.0.0
 + Bump to version 1.0.0 major release candidate
 + Removed deprecated interfaces getTokenFromSecret, getTokenFromCertFileName and getTokenFromCertString

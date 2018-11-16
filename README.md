@@ -164,7 +164,7 @@ let formData = {key : 'value'};
 ```
 **NOTE** 
 
-For **formData** parameter used for Signature generation, the key value parameters **do not** need to be URL encoded
+For **formData** parameter used for Signature generation, the key value parameters **do not** need to be URL encoded, 
 When your client program is making the actual HTTP POST call, the key value parameters **has** to be URL encoded   
 
 - `queryString`

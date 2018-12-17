@@ -160,12 +160,22 @@ An identifier for the caller, this can be set to any value.
 Object representation of form data (x-www-form-urlencoded) passed during HTTP POST / HTTP PUT requests
 
 ```javascript
+//For Signature generation (do not need to be URL encoded)
 let formData = {key : 'value'};
+```
+
+```javascript
+//For making the actual HTTP POST call (need to be URL encoded)
+let postData = qs.stringify(formData, null, null, {encodeURIComponent: encodeURIComponent});
+let req = request(param.httpMethod, targetURL.href);
+req.buffer(true);
+req = req.type("application/x-www-form-urlencoded").set("Content-Length", Buffer.byteLength(postData)).send(postData);
 ```
 **NOTE** 
 
 For **formData** parameter used for Signature generation, the key value parameters **do not** need to be URL encoded, 
 When your client program is making the actual HTTP POST call, the key value parameters **has** to be URL encoded   
+
 
 - `queryString`
 

@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### V1.0.4
++ Compiled for Node 10.x.x LTS
++ Update Travis configuration
+
 ### V1.0.3
 + npm commands for eslint
 

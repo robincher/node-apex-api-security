@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### V1.0.5
++ Fixed Bug on signature URL when appending with standard HTTP/HTTPS Port
+
 ### V1.0.4
 + Compiled for Node 10.x.x LTS
 + Update Travis configuration

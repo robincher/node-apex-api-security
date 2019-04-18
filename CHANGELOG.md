@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### V1.0.6
++ Fixed issue #34 by moving test suite data package to dev dependency. 
++ Bump node dependencies to latest 
+
 ### V1.0.5
 + Fixed Bug on signature URL when appending with standard HTTP/HTTPS Port
 

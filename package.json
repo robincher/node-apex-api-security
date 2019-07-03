@@ -14,7 +14,8 @@
     "minimist": "^1.2.0",
     "querystring": "^0.2.0",
     "test-suites-apex-api-security": "git+https://github.com/GovTechSG/test-suites-apex-api-security.git",
-    "winston": "^2.4.4"
+    "winston": "^2.4.4",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -41,6 +42,9 @@
     "test-travis-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint lib/*.js",
     "lint-fix": "eslint --fix lib/*.js",
-    "lint-fix-dry-run": "eslint --fix-dry-run lib/*.js"
-  }
+    "lint-fix-dry-run": "eslint --fix-dry-run lib/*.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }

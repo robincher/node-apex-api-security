@@ -25,8 +25,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "mocha": "^6.1.4",
-    "test-suites-apex-api-security": "git+https://github.com/GovTechSG/test-suites-apex-api-security.git#master",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "test-suites-apex-api-security": "git+https://github.com/GovTechSG/test-suites-apex-api-security.git#master"
   },
   "repository": {
     "type": "git",

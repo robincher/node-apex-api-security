@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### V1.0.8
+
+- Fix Object mutation issue #40 when ApiSigningUtil is called too many times with same object
+
 ### V1.0.7
 
 - Update lodash dependency version to fix CVE-2019-10744

@@ -10,7 +10,7 @@
     "node": "^10.16.x"
   },
   "dependencies": {
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.16",
     "minimist": "^1.2.0",
     "querystring": "^0.2.0",
     "winston": "^2.4.4"
